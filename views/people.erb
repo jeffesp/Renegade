@@ -1,0 +1,11 @@
+<p><%= @type %></p>
+
+<ul>
+  <% @people.each do |person| %>
+    <li>
+    <%= person[:first_name] %> <%= person[:last_name] %>
+    <!-- the string interpolation doesn't work here <a href="/view/{#person[:type]}/{#person[:id]}">View</a> -->
+    </li>
+
+  <% end %>
+</ul>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Renegade!</title>
+    <meta charset=utf-8 />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">Renegade!</a>
+          <ul class="nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/people">People</a></li>
+            <li><a href="/meetings">Meetings</a></li>
+          </ul>
+<!--          <form action="/login" method="post" class="pull-right">
+            <input class="input-small" type="text" placeholder="Username">
+            <input class="input-small" type="password" placeholder="Password">
+            <button class="btn" type="submit">Sign in</button>
+          </form> -->
+        </div>
+      </div>
+    </div>
+    
+     <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+          <h1><%= @title %> <small>Supporting text or tagline</small></h1>
+        </div>
+        <div class="row">
+          <div class="span16">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+# myapp.rb
+require 'sinatra'
+
+# sample auth thingy from intro page.
+set(:auth) do |*roles|   # <- notice the splat here
+  condition do
+    unless logged_in? && roles.any? {|role| current_user.in_role? role }
+      redirect "/login", 303 # 303, really?
+    end
+  end
+end
+
+get '/login' do
+
+end
+
+post '/login' do
+  # bcrypt?
+  # how do I get form params?
+  # how to set cookie?
+end
+
+get '/(index)?' do
+  'Renegate Attendance'
+end
+
+# student stuff (TODO: make path work for student/worker and take right action based on that?)
+get '/student/', :auth => :user do
+end
+
+get '/studend/:id', :auth => :user do
+end
+
+get '/student/add', :auth => :admin do
+end
+
+post '/student/add', :auth => :admin  do
+end
+
+get '/student/edit/:id', :auth => :admin  do
+end
+
+post '/student/edit/:id', :auth => :admin do
+end
+
+post '/student/deactivate/:id', :auth => [:admin, :super] do
+end
+
+post '/student/activate/:id', :auth => [:admin, :super] do
+end
+
+/worker/
+/worker/add
+/worker/edit
+/worker/deactivate
+/worker/activate
+/class/
+/class/add
+/class/edit
+/roster/
+/roster/add
+/roster/edit
+
+# in meeting methods we need an additional security check where the workers can't modify each other's classes.
+# can we do something else like the one above?
+/meeting/
+/meeting/add
+/meeting/edit
+
+BEGIN;
+
+CREATE TABLE people (
+  id              INTEGER NOT NULL,
+  first_name      TEXT NOT NULL,
+  last_name       TEXT NOT NULL,
+  create_date     DATETIME NOT NULL,
+  delete_date     DATETIME NULL,
+  -- TODO: more fields....
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE student_parents (
+  student_id      INTEGER NOT NULL,
+  parent_id       INTEGER NOT NULL,
+  PRIMARY KEY (student_id, parent_id),
+  FOREIGN KEY (student_id) REFERENCES people (id) ON DELETE CASCADE,
+  FOREIGN KEY (parent_id)  REFERENCES people (id) ON DELETE CASCADE
+);
+
+CREATE TABLE classes (
+  id              INTEGER NOT NULL,
+  name            TEXT NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE rosters (
+  id              INTEGER NOT NULL,
+  start_date      DATETIME NOT NULL,
+  end_date        DATETIME NOT NULL
+  class_id        INTEGER NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (class_id)  REFERENCES classes (id)
+);
+
+CREATE TABLE worker_roster (
+  worker_id       INTEGER NOT NULL,
+  roster_id       INTEGER NOT NULL,
+  is_primary      BIT NOT NULL,
+  PRIMARY KEY (worker_id, roster_id),
+  FOREIGN KEY (worker_id) REFERENCES people (id),
+  FOREIGN KEY (roster_id) REFERENCES rosters (id)
+);
+
+CREATE TABLE student_roster (
+  student_id      INTEGER NOT NULL,
+  roster_id       INTEGER NOT NULL,
+  PRIMARY KEY (student_id, roster_id),
+  FOREIGN KEY (student_id) REFERENCES people (id),
+  FOREIGN KEY (roster_id)  REFERENCES rosters (id)
+);
+
+CREATE TABLE meetings (
+  id              INTEGER NOT NULL,
+  date            DATETIME NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE meeting_attendance (
+  meeting_id     INTEGER NOT NULL,
+  person_id      INTEGER NOT NULL,
+  FOREIGN KEY (meeting_id) REFERENCES meetings (id) ON DELETE CASCADE,
+  FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE,
+);
+
+CREATE TABLE users (
+  id              INTEGER NOT NULL,
+  email_address   TEXT NOT NULL,
+  password_hash   TEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE roles (
+  id              INTEGER NOT NULL,
+  role_name       TEXT NOT NULL,
+  is_active       BIT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE users_roles (
+  user_id         INTEGER NOT NULL,
+  role_id         INTEGER NOT NULL,
+  PRIMARY KEY (user_id, role_id)
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
+);
+
+COMMIT;
