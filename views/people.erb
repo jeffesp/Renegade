@@ -1,11 +1,20 @@
-<p><%= @type %></p>
+<p><%= @type %>s</p>
 
-<ul>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
   <% @people.each do |person| %>
-    <li>
-    <%= person[:first_name] %> <%= person[:last_name] %>
-    <!-- the string interpolation doesn't work here <a href="/view/{#person[:type]}/{#person[:id]}">View</a> -->
-    </li>
-
+    <tr>
+      <td><%= person[:first_name] %> <%= person[:last_name] %></td>
+      <td><a href='<%= "/view/student/#{person[:id]}"%>'>Details</a> </td>
+      <td><a href='<%= "/edit/student/#{person[:id]}"%>'>Edit</a> </td>
+    </tr>
   <% end %>
-</ul>
+</tbody>
+</table>

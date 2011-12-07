@@ -4,6 +4,8 @@ CREATE TABLE people (
   id              INTEGER NOT NULL,
   first_name      TEXT NOT NULL,
   last_name       TEXT NOT NULL,
+  data            TEXT NULL,
+  -- non input items
   person_type     INTEGER NOT NULL,
   create_date     DATETIME NOT NULL,
   delete_date     DATETIME NULL,
@@ -20,6 +22,7 @@ CREATE TABLE student_parents (
 
 CREATE TABLE classes (
   id              INTEGER NOT NULL,
+  short_name      TEXT NOT NULL,
   name            TEXT NOT NULL,
   PRIMARY KEY(id)
 );
@@ -45,9 +48,18 @@ CREATE TABLE worker_roster (
 CREATE TABLE student_roster (
   student_id      INTEGER NOT NULL,
   roster_id       INTEGER NOT NULL,
+  classification  INTEGER NOT NULL,
   PRIMARY KEY (student_id, roster_id),
   FOREIGN KEY (student_id) REFERENCES people (id),
   FOREIGN KEY (roster_id)  REFERENCES rosters (id)
+  FOREIGN KEY (classification)  REFERENCES classifications (id)
+);
+
+CREATE TABLE classifications (
+  id              INTEGER NOT NULL,
+  abbreviation    TEXT NOT NULL,
+  name            TEXT NOT NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE locations (
@@ -55,6 +67,7 @@ CREATE TABLE locations (
   name            TEXT NOT NULL,
   description     TEXT NULL,
   create_date     DATETIME NOT NULL,
+  delete_date     DATETIME NULL,
   PRIMARY KEY (id)
 );
 
@@ -68,11 +81,14 @@ CREATE TABLE meetings (
 
 CREATE TABLE meeting_attendance (
   meeting_id     INTEGER NOT NULL,
+  class_id       INTEGER NOT NULL,
   person_id      INTEGER NOT NULL,
+  FOREIGN KEY (class_id)   REFERENCES classes (id) ON DELETE CASCADE,
   FOREIGN KEY (meeting_id) REFERENCES meetings (id) ON DELETE CASCADE,
-  FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE
+  FOREIGN KEY (person_id)  REFERENCES people (id) ON DELETE CASCADE
 );
 
+-- tables that support the application, not data used by the application
 CREATE TABLE users (
   id              INTEGER NOT NULL,
   email_address   TEXT NOT NULL,
@@ -95,4 +111,15 @@ CREATE TABLE users_roles (
   FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
-COMMIT;
+--COMMIT;
+
+INSERT INTO classes (short_name, name) VALUES ('P-1', 'PreK-1st');
+INSERT INTO classes (short_name, name) VALUES ('2-3', '2nd-3rd');
+INSERT INTO classes (short_name, name) VALUES ('4-5', '4th-5th');
+INSERT INTO classes (short_name, name) VALUES ('J-Hi', 'Jr. High');
+INSERT INTO classifications (abbreviation, name) VALUES ('XT', 'Xenos Transfer');
+INSERT INTO classifications (abbreviation, name) VALUES ('N/RN', 'New/Returning New');
+INSERT INTO classifications (abbreviation, name) VALUES ('O', 'Original');
+INSERT INTO locations (name, description, create_date) VALUES ('JHi', 'Jr. High and below', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('Hi', 'High School', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('South', 'South Side', date('now'));

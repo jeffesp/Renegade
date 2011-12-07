@@ -21,7 +21,7 @@ class RenegadeData
   def get_class_students(class_id)
     # wow, I am doing 3 joins just to get a student out of their class? maybe I need to review my data model
     @DB[:people].
-      filter(:person_type => @types[:student]).
+      filter(:person_type => @types[:student], :delete_date => nil).
         join(:student_roster, :student_id => :id).
         join(:roster, :id => :roster_id).
         join(:class, :id => :class_id).
@@ -30,37 +30,37 @@ class RenegadeData
 
   # active is defined as attended in last 2 months by default
   def get_active_people(last_attendance=(Date.today << 2))
-    @DB[:people].filter(:last_attendance > last_attendance)
+    @DB[:people].filter(:last_attendance > last_attendance, :delete_date => nil)
   end
 
   def find_people(name)
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
-    @DB[:people].filter(:first_name.like("%{#name}%")).or(:last_name.like("%{#name}%"))
+    @DB[:people].filter(:delete_date => nil).filter(:first_name.like("%{#name}%")).or(:last_name.like("%{#name}%"))
   end
 
-  def add_person(first_name, last_name, type)
-    @DB[:people].insert(
-      :first_name => first_name,
-      :last_name => last_name,
+  def add_person(params)
+    local_params = params.merge({
       :create_date => Date.today,
-      :person_type => @types[type]
-    )
+      :person_type => @types[params['type'].to_sym]
+    })
+    local_params.delete('type')
+    @DB[:people].insert(local_params)
   end
 
   def get_person(id, type)
-    @DB[:people].filter({:id => id } & { :person_type => @types[type]}).first
+    @DB[:people].filter(:id => id, :delete_date => nil).first
   end
 
-  def add_student(first_name, last_name, class_id)
-    student_id = @DB[:people].insert(
-      :first_name => first_name,
-      :last_name => last_name,
+  def add_student(params)
+    local_params = params.merge({
       :create_date => Date.today,
       :person_type => @types[:student]
-    )
-    roster_id = @DB[:rosters].filter('end_date IS NOT NULL AND class_id = ?', class_id).select(:roster_id)
-    #@DB[:class]_rosters.insert(:student_id => studnent_id, :roster_id => roster_id)
+    })
+    student_id = @DB[:people].insert(local_params)
+    #roster_id = @DB[:rosters].filter('end_date IS NOT NULL AND class_id = ?', class_id).select(:roster_id).first
+    #classification = 0 #classification = @DB[:classifications].filter('')
+    #@DB[:student_roster].insert( :student_id => student_id, :roster_id => roster_id, :classificatoin => classification)
   end
 
   def add_worker(first_name, last_name)
