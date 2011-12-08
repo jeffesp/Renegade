@@ -40,11 +40,13 @@ class RenegadeData
   end
 
   def add_person(params)
-    local_params = params.merge({
-      :create_date => Date.today,
-      :person_type => @types[params['type'].to_sym]
-    })
-    local_params.delete('type')
+    local_params = {
+      :first_name => params['first_name'],
+      :last_name => params['last_name'],
+      :data => params['data'],
+      :person_type => @types[params['type'].to_sym],
+      :create_date => Date.today
+    }
     @DB[:people].insert(local_params)
   end
 

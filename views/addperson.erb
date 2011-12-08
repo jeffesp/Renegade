@@ -1,6 +1,6 @@
 <form action="/add/<%= @type %>" method="POST">
 <fieldset>
-  <legend>New <%= @type %></legend>
+  <legend>New <%= @type.to_s.capitalize %></legend>
     <div class="clearfix">
         <label>First Name:</label>
         <div class="input">
@@ -13,9 +13,69 @@
             <input type="text" id="last_name" name="last_name" />
         </div>
     </div>
+    <div id="data-values">
+      <div class="clearfix">
+        <label>First Attendance:</label>
+        <div class="input">
+          <input type="text" id="first_attendance" name="first_attendance" value="<%= Date.today %>" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Address:</label>
+        <div class="input">
+          <input type="text" id="address" name="address" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <div class="input">
+          <input type="text" id="address2" name="address2" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>City:</label>
+        <div class="input">
+          <input type="text" id="city" name="city" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>State:</label>
+        <div class="input">
+          <div class="inline-inputs">
+            <input type="text" class="span1" id="state" name="state" value="OH" />
+            Zip:
+            <input type="text" class="span2" id="zip" name="zip" />
+          </div>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Phone:</label>
+        <div class="input">
+          <input type="text" id="phone" name="phone" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Allergy or Medical Information:</label>
+        <div class="input">
+          <textarea rows="3" id="allergy_medical" name="allergy_medical"></textarea>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Notes:</label>
+        <div class="input">
+          <textarea rows="3" id="notes" name="notes"></textarea>
+        </div>
+      </div>
+    </div>
     <div class="actions">
-      <button class="btn primary" type="submit">Add <%= @type %></button>
+      <button class="btn primary" type="submit">Add <%= @type.to_s.capitalize %></button>
         <!-- <button class="btn" type="clear" name="cancel">Cancel</button> -->
     </div>
+    <input type="hidden" id="data" name="data" />
+    <script type="text/javascript">
+      $("#data-values :input").change(function () {
+          $("#data").val(JSON.stringify($("#data-values :input").serializeArray()));
+          window.console && console.log($("#data").val());
+      });
+    </script>
 </fieldset>
 </form>

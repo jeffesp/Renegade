@@ -1,5 +1,4 @@
-<p><%= @type %>s</p>
-
+<h2><%= @type.to_s.capitalize %>s</h2>
 <table>
   <thead>
     <tr>
@@ -12,8 +11,8 @@
   <% @people.each do |person| %>
     <tr>
       <td><%= person[:first_name] %> <%= person[:last_name] %></td>
-      <td><a href='<%= "/view/student/#{person[:id]}"%>'>Details</a> </td>
-      <td><a href='<%= "/edit/student/#{person[:id]}"%>'>Edit</a> </td>
+      <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'>Details</a> </td>
+      <td><a href='<%= "/edit/#{@type}/#{person[:id]}"%>'>Edit</a> </td>
     </tr>
   <% end %>
 </tbody>
