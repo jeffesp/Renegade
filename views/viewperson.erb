@@ -7,8 +7,10 @@
 Record Created: <%= @person[:create_date] %>
 </div>
 <script id="dataItem" type="text/x-jquery-tmpl">
+  {{#if value}}
   <dt>{{titleCase name}}</dt>
   <dd>{{= value}}</dd>
+  {{/if}}
 </script>
 
 <script type="text/javascript">
@@ -25,7 +27,7 @@ Record Created: <%= @person[:create_date] %>
   });
 
   $(document).ready(function () {
-      var order = ["phone", "address", "address2", "city", "state", "zip", "first_attendance", "allergy_medical", "notes" ];
+      var order = ["phone", "address", "address2", "city", "state", "zip", "allergy_medical", "notes", "first_attendance"];
       var data = JSON.parse('<%= @person[:data] %>');
       var orderedData = _.sortBy(data, function (item) { 
           return _.indexOf(order,item.name);

@@ -71,8 +71,13 @@ end
 
 get '/view/:type/:id' do
   data = RenegadeData.new
-  @person = data.get_person(params[:id], params[:type].to_sym)
+  @person = data.get_person(params[:id], params[:type].to_sym) or redirect "/notfound"
   erb :viewperson
+end
+
+get '/notfound' do
+  @message = "What you are looking for is no longer here."
+  erb :notfound
 end
 
 
