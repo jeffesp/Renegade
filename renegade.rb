@@ -42,12 +42,30 @@ end
 
 get '/add/:type' do
   @type = params[:type].to_sym
+  @person = {}
+  @action = 'add'
   erb :addperson
 end
 
 post '/add/:type' do
-  data = RenegadeData.new
-  personid = data.add_person(params)
+  personid = RenegadeData.new.add_person(params)
+  redirect "/view/student/#{personid}", 302
+end
+
+get '/edit/:type/:id' do
+  @type = params[:type].to_sym
+  @person = RenegadeData.new.get_person(params[:id], params[:type].to_sym)
+  @action = 'edit'
+  erb :addperson
+end
+
+post '/edit/:type/:id' do
+  personid = RenegadeData.new.update_person(params)
+  redirect "/view/student/#{personid}", 302
+end
+
+post '/add/:type' do
+  personid = RenegadeData.new.data.add_person(params)
   redirect "/view/student/#{personid}", 302
 end
 

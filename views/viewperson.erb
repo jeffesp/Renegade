@@ -1,7 +1,37 @@
 <dl id="person">
   <dt>Name</dt>
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
-  <dt>Record Created</dt>
-  <dd><%= @person[:create_date] %></dd>
 
 </dl>
+<div style="display:none">
+Record Created: <%= @person[:create_date] %>
+</div>
+<script id="dataItem" type="text/x-jquery-tmpl">
+  <dt>{{titleCase name}}</dt>
+  <dd>{{= value}}</dd>
+</script>
+
+<script type="text/javascript">
+  $.views.registerTags({
+      titleCase: function (value) {
+          return _.reduce(
+              value.split("_"),
+              function (accum, item) {
+                  return accum.concat(item.charAt(0).toUpperCase() + item.slice(1) + " ");
+              },
+              ""
+          );
+      }
+  });
+
+  $(document).ready(function () {
+      var order = ["phone", "address", "address2", "city", "state", "zip", "first_attendance", "allergy_medical", "notes" ];
+      var data = JSON.parse('<%= @person[:data] %>');
+      var orderedData = _.sortBy(data, function (item) { 
+          return _.indexOf(order,item.name);
+      });
+      $("#person").append(
+        $("#dataItem").render(orderedData)
+      );
+  });
+</script>

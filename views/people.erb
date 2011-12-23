@@ -1,8 +1,10 @@
 <h2><%= @type.to_s.capitalize %>s</h2>
-<table>
+<table id="people">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>First Attendance</th>
       <th></th>
       <th></th>
     </tr>
@@ -10,10 +12,26 @@
   <tbody>
   <% @people.each do |person| %>
     <tr>
-      <td><%= person[:first_name] %> <%= person[:last_name] %></td>
+      <td><%= person[:first_name] %></td>
+      <td><%= person[:last_name] %></td>
+      <td><%= person[:first_attendance] %></td>
       <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'>Details</a> </td>
       <td><a href='<%= "/edit/#{@type}/#{person[:id]}"%>'>Edit</a> </td>
     </tr>
   <% end %>
 </tbody>
 </table>
+<div id="pager" class="pager">
+    <a href="#" class="first">&lt;&lt;</a>
+    <a href="#" class="prev">&lt;</a>
+    <span class="pagedisplay"/>
+    <a href="#" class="next">&gt;</a>
+    <a href="#" class="last">&gt;&gt;</a>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+      $("#people")
+        .tablesorter()
+        .tablesorterPager({container: "pager"});
+  });
+</script>

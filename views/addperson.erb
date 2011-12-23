@@ -1,23 +1,23 @@
-<form action="/add/<%= @type %>" method="POST">
+<form action="/<%= @action %>/<%= @type %>" method="POST">
 <fieldset>
-  <legend>New <%= @type.to_s.capitalize %></legend>
+  <legend><%= @action.capitalize %> <%= @type.to_s.capitalize %></legend>
     <div class="clearfix">
         <label>First Name:</label>
         <div class="input">
-            <input type="text" id="first_name" name="first_name" />
+          <input type="text" id="first_name" name="first_name" value="<%= @person[:first_name] %>" />
         </div>
     </div>
     <div class="clearfix">
         <label>Last Name:</label>
         <div class="input">
-            <input type="text" id="last_name" name="last_name" />
+          <input type="text" id="last_name" name="last_name" value="<%= @person[:last_name] %>" />
         </div>
     </div>
     <div id="data-values">
       <div class="clearfix">
         <label>First Attendance:</label>
         <div class="input">
-          <input type="text" id="first_attendance" name="first_attendance" value="<%= Date.today %>" />
+          <input type="text" id="first_attendance" name="first_attendance" value="<%= @person[:first_attendance] || Date.today %>" />
         </div>
       </div>
       <div class="clearfix">
@@ -67,14 +67,25 @@
       </div>
     </div>
     <div class="actions">
-      <button class="btn primary" type="submit">Add <%= @type.to_s.capitalize %></button>
-        <!-- <button class="btn" type="clear" name="cancel">Cancel</button> -->
+      <button class="btn primary" type="submit"><%= @action.capitalize %> <%= @type.to_s.capitalize %></button>
     </div>
-    <input type="hidden" id="data" name="data" />
+    <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
     <script type="text/javascript">
-      $("#data-values :input").change(function () {
-          $("#data").val(JSON.stringify($("#data-values :input").serializeArray()));
-          window.console && console.log($("#data").val());
+      $(document).ready(function () {
+        $("#data-values :input").change(function () {
+            $("#data").val(JSON.stringify($("#data-values :input").serializeArray()));
+            window.console && console.log($("#data").val());
+        });
+        // Deserialize the JSON object value to the form if there is data in the field
+        var keys, props = [];
+        var data = null;
+        var dataVal = $("#data").val();
+        if (dataVal) {
+          data = JSON.parse(dataVal);
+          for (var i = 0; i < data.length; i++) {
+            $("#" + data[i].name).val(data[i].value);
+          }
+        }
       });
     </script>
 </fieldset>

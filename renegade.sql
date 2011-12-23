@@ -5,6 +5,7 @@ CREATE TABLE people (
   first_name      TEXT NOT NULL,
   last_name       TEXT NOT NULL,
   data            TEXT NULL,
+  photo_id        INTEGER NULL,
   -- non input items
   person_type     INTEGER NOT NULL,
   create_date     DATETIME NOT NULL,
@@ -18,6 +19,12 @@ CREATE TABLE student_parents (
   PRIMARY KEY (student_id, parent_id),
   FOREIGN KEY (student_id) REFERENCES people (id) ON DELETE CASCADE,
   FOREIGN KEY (parent_id)  REFERENCES people (id) ON DELETE CASCADE
+);
+
+CREATE TABLE photos (
+  id              INTEGER NOT NULL,
+  path            TEXT,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE classes (
@@ -111,7 +118,7 @@ CREATE TABLE users_roles (
   FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
---COMMIT;
+COMMIT;
 
 INSERT INTO classes (short_name, name) VALUES ('P-1', 'PreK-1st');
 INSERT INTO classes (short_name, name) VALUES ('2-3', '2nd-3rd');
