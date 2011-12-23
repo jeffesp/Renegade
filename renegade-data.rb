@@ -53,13 +53,13 @@ class RenegadeData
 
   def update_person(params)
     local_params = {
+      :id => params['id'],
       :first_name => params['first_name'],
       :last_name => params['last_name'],
       :data => params['data'],
-      :first_attendance => params['first_attendance'] || Date.today,
       :person_type => @types[params['type'].to_sym]
     }
-    @DB[:people].update(local_params)
+    @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
   def get_person(id, type)

@@ -70,11 +70,11 @@
       <button class="btn primary" type="submit"><%= @action.capitalize %> <%= @type.to_s.capitalize %></button>
     </div>
     <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
+    <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
       $(document).ready(function () {
         $("#data-values :input").change(function () {
             $("#data").val(JSON.stringify($("#data-values :input").serializeArray()));
-            window.console && console.log($("#data").val());
         });
         // Deserialize the JSON object value to the form if there is data in the field
         var keys, props = [];

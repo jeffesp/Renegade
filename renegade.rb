@@ -59,9 +59,9 @@ get '/edit/:type/:id' do
   erb :addperson
 end
 
-post '/edit/:type/:id' do
+post '/edit/:type' do
   personid = RenegadeData.new.update_person(params)
-  redirect "/view/student/#{personid}", 302
+  redirect "/view/student/#{params[:id]}", 302
 end
 
 post '/add/:type' do
