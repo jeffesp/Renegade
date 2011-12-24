@@ -4,7 +4,7 @@
     <tr>
       <th>First Name</th>
       <th>Last Name</th>
-      <th>First Attendance</th>
+      <th>Phone/Address</th>
       <th></th>
       <th></th>
     </tr>
@@ -14,10 +14,22 @@
     <tr>
       <td><%= person[:first_name] %></td>
       <td><%= person[:last_name] %></td>
-      <td><%= person[:first_attendance] %></td>
+      <td><span class="info"></span></td>
       <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'>Details</a> </td>
       <td><a href='<%= "/edit/#{@type}/#{person[:id]}"%>'>Edit</a> </td>
     </tr>
   <% end %>
 </tbody>
 </table>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+      var infoArray = [];
+      var tableRows = $("#people tbody tr");
+      <% @people.each do |person| %> infoArray.push(JSON.parse('<%= person[:data] %>')); <% end %>
+      $.template("basicData", "{{=phone}}/{{=address}}");
+      for (var i = 0; i < tableRows.length; i++) {
+          $(tableRows[i]).find(".info").html($.render(infoArray[i], "basicData"));
+      }
+  });
+</script>

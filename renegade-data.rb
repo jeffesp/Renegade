@@ -45,7 +45,6 @@ class RenegadeData
       :last_name => params['last_name'],
       :data => params['data'],
       :person_type => @types[params['type'].to_sym],
-      :first_attendance => params['first_attendance'] || Date.today,
       :create_date => Date.today
     }
     @DB[:people].insert(local_params)

@@ -1,39 +1,38 @@
 <dl id="person">
   <dt>Name</dt>
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
-
 </dl>
 <div style="display:none">
 Record Created: <%= @person[:create_date] %>
 </div>
 <script id="dataItem" type="text/x-jquery-tmpl">
-  {{#if value}}
-  <dt>{{titleCase name}}</dt>
-  <dd>{{= value}}</dd>
-  {{/if}}
+  <dt>Phone</dt>
+  <dd>{{= phone}}</dt>
+  <dt>Address</dt>
+  <dd>
+  <div>{{= address}}</div>
+  <div>{{= address2}}</div>
+  <div>{{= city}}, {{= state}} {{= zip}}</div>
+  </dd>
+  <dt>Allergy/Medical Condition</dt>
+  <dd>{{itemOrNone allergy_medical}}</dd>
+  <dt>Notes</dt>
+  <dd>{{itemOrNone notes}}</dd>
+  <dt>First Attendance</dt>
+  <dd>{{= first_attendance}}</dd>
 </script>
 
 <script type="text/javascript">
   $.views.registerTags({
-      titleCase: function (value) {
-          return _.reduce(
-              value.split("_"),
-              function (accum, item) {
-                  return accum.concat(item.charAt(0).toUpperCase() + item.slice(1) + " ");
-              },
-              ""
-          );
+      itemOrNone: function (value) {
+          return value || "None";
       }
   });
 
   $(document).ready(function () {
-      var order = ["phone", "address", "address2", "city", "state", "zip", "allergy_medical", "notes", "first_attendance"];
       var data = JSON.parse('<%= @person[:data] %>');
-      var orderedData = _.sortBy(data, function (item) { 
-          return _.indexOf(order,item.name);
-      });
       $("#person").append(
-        $("#dataItem").render(orderedData)
+        $("#dataItem").render(data)
       );
   });
 </script>

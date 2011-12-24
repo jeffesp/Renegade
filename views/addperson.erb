@@ -73,19 +73,25 @@
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
       $(document).ready(function () {
-        $("#data-values :input").change(function () {
-            $("#data").val(JSON.stringify($("#data-values :input").serializeArray()));
-        });
-        // Deserialize the JSON object value to the form if there is data in the field
-        var keys, props = [];
-        var data = null;
-        var dataVal = $("#data").val();
-        if (dataVal) {
-          data = JSON.parse(dataVal);
-          for (var i = 0; i < data.length; i++) {
-            $("#" + data[i].name).val(data[i].value);
+          var data = null;
+          var dataVal = $("#data").val();
+          var keys;
+          if (dataVal) {
+            data = JSON.parse(dataVal);
+            keys = _.keys(data);
+            for (var i = 0; i < keys.length; i++) {
+                $("#" + keys[i]).val(data[keys[i]]);
+            }
           }
-        }
+          $("form").submit(function () {
+              var data = {};
+              $("#data-values :input").each(function () {
+                  var item = {};
+                  item[$(this).attr("name")] = $(this).val();
+                  $.extend(data,item);
+              });
+              $("#data").val(JSON.stringify(data));
+          });
       });
     </script>
 </fieldset>

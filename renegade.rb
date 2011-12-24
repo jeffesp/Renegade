@@ -4,6 +4,16 @@ require 'sinatra'
 
 require 'renegade-data'
 
+before do
+  # auth
+  # create conn to db?
+end
+
+after do
+  # close conn to db?
+end
+
+
 get '/' do
     erb :home
 end
@@ -54,7 +64,7 @@ end
 
 get '/edit/:type/:id' do
   @type = params[:type].to_sym
-  @person = RenegadeData.new.get_person(params[:id], params[:type].to_sym)
+  @person = RenegadeData.new.get_person(params[:id], params[:type].to_sym) or redirect "/notfound"
   @action = 'edit'
   erb :addperson
 end
