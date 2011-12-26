@@ -1,3 +1,2 @@
-require 'renegade'
-
-run Sinatra::Application
+require './renegade'
+run Renegade

@@ -1,0 +1,19 @@
+12/24/2011
+Currently add/edit/view works for student and list of students.
+
+Add authentication.
+
+Decide if I want to move to VIEWs for the individual types of people in the system.
+
+Add stuff to deal with workers. Most of it is there with Students, need to 
+determine what is different and how that should be handled.
+
+Change so style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
+
+Move to heroku? Get something setup at Xenos? Initiate that process.
+
+Add Script/CSS compression for production environment.
+
+Determine what to do about Templates - common file and all compiled?
+
+Add Meetings/classes/rosters.
