@@ -1,7 +1,15 @@
 12/24/2011
 Currently add/edit/view works for student and list of students.
 
-Add birthday, school grade, salvation date, baptism date.
+Allow for entry of a second address for pickup? Make pickup address the first entered, and 
+have a secondary for other addresses?
+
+Validation on student entry form:
+1. Name fields required.
+2. None on phone?
+3. Change state to dropdown
+4. Zip must be numbers
+5. Birth/salvation/baptism/first attendance must be dates
 
 Add authentication.
 

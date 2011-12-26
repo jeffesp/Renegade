@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'warden'
 require 'sinatra/base'
 require 'renegade-data'
 
@@ -80,6 +79,7 @@ class Renegade < Sinatra::Base
 
   get '/view/:type/:id' do
     data = RenegadeData.new
+    @type = params[:type].to_sym
     @person = data.get_person(params[:id], params[:type].to_sym) or redirect "/notfound"
     erb :viewperson
   end

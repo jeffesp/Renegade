@@ -15,9 +15,9 @@
     </div>
     <div id="data-values">
       <div class="clearfix">
-        <label>First Attendance:</label>
+        <label>Phone:</label>
         <div class="input">
-          <input type="text" id="first_attendance" name="first_attendance" value="<%= @person[:first_attendance] || Date.today %>" />
+          <input type="text" id="phone" name="phone" />
         </div>
       </div>
       <div class="clearfix">
@@ -48,9 +48,48 @@
         </div>
       </div>
       <div class="clearfix">
-        <label>Phone:</label>
+        <label>Grade Level:</label>
         <div class="input">
-          <input type="text" id="phone" name="phone" />
+          <select name="grade" id="grade">
+            <option value="-1">Pre-K</option>
+            <option value="0">K</option>
+            <option value="1">1st</option>
+            <option value="2">2nd</option>
+            <option value="3">3rd</option>
+            <option value="4">4th</option>
+            <option value="5">5th</option>
+            <option value="6">6th</option>
+            <option value="7">7th</option>
+            <option value="8">8th</option>
+            <option value="9">9th</option>
+            <option value="10">10th</option>
+            <option value="11">11th</option>
+            <option value="12">12th</option>
+          </select>
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Birthday:</label>
+        <div class="input">
+          <input type="text" id="birthday" name="birthday" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Salvation Date:</label>
+        <div class="input">
+          <input type="text" id="salvation_date" name="salvation_date" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>Baptism Date:</label>
+        <div class="input">
+          <input type="text" id="baptism_date" name="baptism_date" />
+        </div>
+      </div>
+      <div class="clearfix">
+        <label>First Attendance:</label>
+        <div class="input">
+          <input type="text" id="first_attendance" name="first_attendance" />
         </div>
       </div>
       <div class="clearfix">

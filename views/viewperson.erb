@@ -2,6 +2,9 @@
   <dt>Name</dt>
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
 </dl>
+<div class="clearfix">
+  <a href='<%= "/edit/#{@type}/#{@person[:id]}"%>'>Edit</a> | <a href='<%= "/list/#{@type}"%>'>Back to List</a>
+</div>
 <div style="display:none">
 Record Created: <%= @person[:create_date] %>
 </div>
@@ -14,6 +17,22 @@ Record Created: <%= @person[:create_date] %>
   <div>{{= address2}}</div>
   <div>{{= city}}, {{= state}} {{= zip}}</div>
   </dd>
+  {{#if grade}}
+  <dt>Current Grade</dt>
+  <dd>{{= grade}}</dd>
+  {{/if}}
+  {{#if birthday}}
+  <dt>Birthday</dt>
+  <dd>{{= birthday}}</dd>
+  {{/if}}
+  {{#if salvation_date }}
+  <dt>Salvation Date</dt>
+  <dd>{{= salvation_date}}</dd>
+  {{/if}}
+  {{#if baptism_date }}
+  <dt>Baptism Date</dt>
+  <dd>{{= baptism_date}}</dd>
+  {{/if}}
   <dt>Allergy/Medical Condition</dt>
   <dd>{{itemOrNone allergy_medical}}</dd>
   <dt>Notes</dt>
