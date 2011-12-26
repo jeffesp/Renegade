@@ -1,10 +1,10 @@
 require 'rubygems'
+require 'warden'
 require 'sinatra/base'
 require 'renegade-data'
 
 class Renegade < Sinatra::Base
   before do
-    # auth
     # create conn to db?
   end
 
@@ -17,10 +17,10 @@ class Renegade < Sinatra::Base
       erb :home
   end
 
-  #get '/login' do
-  #    erb :login
-  #end
-  #
+#  get '/login' do
+#      erb :login
+#  end
+#
   #post '/login' do
   #    # if email is not registered and password is not empty, check user
   #    user = { } # load from db

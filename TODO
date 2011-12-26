@@ -1,9 +1,15 @@
 12/24/2011
 Currently add/edit/view works for student and list of students.
 
+Add birthday, school grade, salvation date, baptism date.
+
 Add authentication.
 
 Decide if I want to move to VIEWs for the individual types of people in the system.
+
+Add filtering by user for the people displayed - don't need to see South ppl for 
+someone who is in HS group. But need to allow them to expand to that, or have
+a user that will have access to all.
 
 Add stuff to deal with workers. Most of it is there with Students, need to 
 determine what is different and how that should be handled.
