@@ -1,19 +1,18 @@
 12/24/2011
 Currently add/edit/view works for student and list of students.
 
-Allow for entry of a second address for pickup? Make pickup address the first entered, and 
-have a secondary for other addresses?
-
 Validation on student entry form:
-1. Name fields required.
-2. None on phone?
-3. Change state to dropdown
-4. Zip must be numbers
-5. Birth/salvation/baptism/first attendance must be dates
+2. None on phone? Starts with the standard but allows for anything at end?
+
+Decide if I want to move to VIEWs for the individual types of people in the system.
 
 Add authentication.
 
-Decide if I want to move to VIEWs for the individual types of people in the system.
+Add google map display in view page.
+
+Allow for entry of a second address for pickup? Make pickup address the first entered, and 
+have a secondary for other addresses? - NOTE: just enter in "notes" for now, make data entered
+the most used even if it isn't the residence or home phone number.
 
 Add filtering by user for the people displayed - don't need to see South ppl for 
 someone who is in HS group. But need to allow them to expand to that, or have
