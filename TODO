@@ -1,14 +1,12 @@
-12/24/2011
-Currently add/edit/view works for student and list of students.
-
-Validation on student entry form:
-2. None on phone? Starts with the standard but allows for anything at end?
-
-Decide if I want to move to VIEWs for the individual types of people in the system.
+NOTES
 
 Add authentication.
 
+Change so style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
+
 Add google map display in view page.
+
+It would be nice to have some sort of route or url creation code rather than manually throwing together strings.
 
 Allow for entry of a second address for pickup? Make pickup address the first entered, and 
 have a secondary for other addresses? - NOTE: just enter in "notes" for now, make data entered
@@ -21,8 +19,6 @@ a user that will have access to all.
 Add stuff to deal with workers. Most of it is there with Students, need to 
 determine what is different and how that should be handled.
 
-Change so style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
-
 Move to heroku? Get something setup at Xenos? Initiate that process.
 
 Add Script/CSS compression for production environment.
@@ -30,3 +26,8 @@ Add Script/CSS compression for production environment.
 Determine what to do about Templates - common file and all compiled?
 
 Add Meetings/classes/rosters.
+
+QUESTIONS
+
+Validation on student entry form:
+2. None on phone? Starts with the standard but allows for anything at end?

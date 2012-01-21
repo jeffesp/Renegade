@@ -11,7 +11,7 @@ class RenegadeData
 
   def initialize
     @DB = Sequel.connect('sqlite://renegade.db')
-    @types = { :student => 1, :worker => 2, :parent => 3 }
+    @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4 }
   end
 
   def get_people(type)

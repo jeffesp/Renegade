@@ -2,8 +2,8 @@
   <dt>Name</dt>
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
 </dl>
-<div class="clearfix">
-  <a href='<%= "/edit/#{@type}/#{@person[:id]}"%>'>Edit</a> | <a href='<%= "/list/#{@type}"%>'>Back to List</a>
+<div class="clearfix well">
+  <a class="btn primary" href='<%= "/edit/#{@type}/#{@person[:id]}"%>'>Edit</a> 
 </div>
 <div style="display:none">
 Record Created: <%= @person[:create_date] %>

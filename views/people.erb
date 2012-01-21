@@ -6,7 +6,6 @@
       <th>Last Name</th>
       <th>Phone/Address</th>
       <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -16,12 +15,14 @@
       <td><%= person[:last_name] %></td>
       <td><span class="info"></span></td>
       <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'>Details</a> </td>
-      <td><a href='<%= "/edit/#{@type}/#{person[:id]}"%>'>Edit</a> </td>
     </tr>
   <% end %>
 </tbody>
 </table>
 
+<div class="row well">
+  <a class="btn primary" href='<%= "/add/#{@type}" %>'>Add New</a>
+</div>
 <script type="text/javascript">
   $(document).ready(function () {
       var infoArray = [];
