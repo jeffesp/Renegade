@@ -15,7 +15,7 @@ class RenegadeData
   end
 
   def get_people(type)
-    @DB[:people].filter(:person_type => @types[type])
+    @DB[type].all
   end
 
   def get_class_students(class_id)
@@ -62,7 +62,7 @@ class RenegadeData
   end
 
   def get_person(id, type)
-    @DB[:people].filter(:id => id, :delete_date => nil).first
+    @DB[type].filter(:id => id).first
   end
 
   def add_student(params)
