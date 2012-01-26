@@ -14,8 +14,8 @@ class RenegadeData
     @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4 }
   end
 
-  def get_people(type)
-    @DB[type].all
+  def get_people(person_type)
+    @DB[person_type].all
   end
 
   def get_class_students(class_id)
@@ -25,7 +25,7 @@ class RenegadeData
         join(:student_roster, :student_id => :id).
         join(:roster, :id => :roster_id).
         join(:class, :id => :class_id).
-          filter(:class_id => class_id)
+          filter(:class_id => class_id).all
   end
 
   # active is defined as attended in last 2 months by default
@@ -61,8 +61,8 @@ class RenegadeData
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
-  def get_person(id, type)
-    @DB[type].filter(:id => id).first
+  def get_person(id, person_type)
+    @DB[person_type].filter(:id => id).first
   end
 
   def add_student(params)
@@ -110,6 +110,31 @@ class RenegadeData
 
   def get_rosters
     @DB[:rosters].filter('end_date IS NOT NULL')
+  end
+
+  # site user stuff
+  def get_user(email_address)
+    @DB[:users].first(:email_address => email_address)
+  end
+
+  def add_user(email_address, password_hash)
+    @DB[:users].insert(
+      :email_address => email_address,
+      :password_hash => password_hash,
+      :active => false
+    )
+  end
+
+  def update_user(old_email_address, new_email_address, password_hash)
+    local_params = {
+      email_address => new_email_address,
+      password_hash => password_hash
+    }
+    @DB[:users].filter(email_address => old_email_address).update(local_params)
+  end
+
+  def deactivate_user(email_address)
+    @DB[:users].filter(email_address => email_address).update({ active => false})
   end
 
 end

@@ -100,6 +100,7 @@ CREATE TABLE users (
   id              INTEGER NOT NULL,
   email_address   TEXT NOT NULL,
   password_hash   TEXT NOT NULL,
+  active          BIT NOT NULL DEFAULT(0),
   PRIMARY KEY (id)
 );
 
