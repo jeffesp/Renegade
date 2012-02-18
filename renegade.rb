@@ -31,7 +31,7 @@ class Renegade < Sinatra::Base
     # if email is registered and password is not empty, check user
     data = RenegadeData.new
     user = data.get_user(params[:email])
-    if user == nil or (!BCrypt::Password.new(user[:password_hash]) == params[:password]) or !(user[:active])
+    if user == nil or !(user[:active]) or (BCrypt::Password.new(user[:password_hash]) != params[:password])
       redirect to("/login?showerror=true"), 302
     end
     response.set_cookie("auth", user[:password_hash])
@@ -63,6 +63,12 @@ class Renegade < Sinatra::Base
     data = RenegadeData.new
     @people = data.get_people(@type)
     erb :people
+  end
+
+  get '/list/people.json' do
+    # here we might receive a search term, some filter information, or nothing?
+    content_type :json
+    { :people => 'value1' }.to_json
   end
 
   get '/add/:type' do

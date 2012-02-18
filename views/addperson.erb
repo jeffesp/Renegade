@@ -1,112 +1,37 @@
+<h2><%= @action.capitalize %> <%= @type.to_s.capitalize %></h2>
 <form action="/<%= @action %>/<%= @type %>" method="POST">
-<fieldset>
-  <legend><%= @action.capitalize %> <%= @type.to_s.capitalize %></legend>
-    <div class="clearfix">
-        <label>First Name:</label>
-        <div class="input">
-          <input type="text" id="first_name" name="first_name" class="required" value="<%= @person[:first_name] %>" />
-        </div>
-    </div>
-    <div class="clearfix">
-        <label>Last Name:</label>
-        <div class="input">
-          <input type="text" id="last_name" name="last_name" class="required" value="<%= @person[:last_name] %>" />
-        </div>
-    </div>
+    <label>First Name:</label>
+    <input type="text" id="first_name" name="first_name" class="required" value="<%= @person[:first_name] %>" />
+    <label>Last Name:</label>
+    <input type="text" id="last_name" name="last_name" class="required" value="<%= @person[:last_name] %>" />
     <div id="data-values">
-      <div class="clearfix">
-        <label>Phone:</label>
-        <div class="input">
-          <input type="text" id="phone" name="phone" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Address:</label>
-        <div class="input">
-          <input type="text" id="address" name="address" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <div class="input">
-          <input type="text" id="address2" name="address2" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>City:</label>
-        <div class="input">
-          <input type="text" id="city" name="city" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>State:</label>
-        <div class="input">
-          <div class="inline-inputs">
-            <input type="text" class="span1" id="state" name="state" value="OH" />
-            Zip:
-            <input type="text" class="span2" id="zip" name="zip" class="digits" />
-          </div>
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Grade Level:</label>
-        <div class="input">
-          <select name="grade" id="grade">
-            <option value="-1">Pre-K</option>
-            <option value="0">K</option>
-            <option value="1">1st</option>
-            <option value="2">2nd</option>
-            <option value="3">3rd</option>
-            <option value="4">4th</option>
-            <option value="5">5th</option>
-            <option value="6">6th</option>
-            <option value="7">7th</option>
-            <option value="8">8th</option>
-            <option value="9">9th</option>
-            <option value="10">10th</option>
-            <option value="11">11th</option>
-            <option value="12">12th</option>
-          </select>
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Birthday:</label>
-        <div class="input">
-          <input type="date" id="birthday" name="birthday" class="dateISO" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Salvation Date:</label>
-        <div class="input">
-          <input type="date" id="salvation_date" name="salvation_date" class="dateISO" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Baptism Date:</label>
-        <div class="input">
-          <input type="date" id="baptism_date" name="baptism_date" class="dateISO" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>First Attendance:</label>
-        <div class="input">
-          <input type="date" id="first_attendance" name="first_attendance" class="dateISO" />
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Allergy or Medical Information:</label>
-        <div class="input">
-          <textarea rows="3" id="allergy_medical" name="allergy_medical"></textarea>
-        </div>
-      </div>
-      <div class="clearfix">
-        <label>Notes:</label>
-        <div class="input">
-          <textarea rows="3" id="notes" name="notes"></textarea>
-        </div>
-      </div>
-    </div>
-    <div class="actions">
-      <button class="btn primary" type="submit"><%= @action.capitalize %> <%= @type.to_s.capitalize %></button>
+      <label>Birthday:</label>
+      <input type="date" id="birthday" name="birthday" class="dateISO" />
+      <label>Phone:</label>
+      <input type="text" id="phone" name="phone" />
+      <label>Address:</label>
+      <input type="text" id="address" name="address" />
+      <label></label>
+      <input type="text" id="address2" name="address2" />
+      <label>City:</label>
+      <input type="text" id="city" name="city" />
+      <label >State:</label>
+      <input type="text" class="span1" id="state" name="state" value="OH" />
+      <label >Zip:</label>
+      <input type="text" class="span2" id="zip" name="zip" class="digits"  />
+      <label>First Attendance:</label>
+      <input type="date" id="first_attendance" name="first_attendance" class="dateISO" />
+      <label>Salvation Date:</label>
+      <input type="date" id="salvation_date" name="salvation_date" class="dateISO" />
+      <label>Baptism Date:</label>
+      <input type="date" id="baptism_date" name="baptism_date" class="dateISO" />
+      <label>Allergy or Medical Information:</label>
+      <textarea rows="3" id="allergy_medical" name="allergy_medical"></textarea>
+      <label>Notes:</label>
+      <textarea rows="3" id="notes" name="notes"></textarea>
+    </div> 
+    <div class="well">
+      <button class="btn btn-primary" type="submit"><%= @action.capitalize %> <%= @type.to_s.capitalize %></button>
     </div>
     <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
@@ -116,34 +41,34 @@
           var dataVal = $("#data").val();
           var keys;
           if (dataVal) {
-            data = JSON.parse(dataVal);
-            keys = _.keys(data);
-            for (var i = 0; i < keys.length; i++) {
-                $("#" + keys[i]).val(data[keys[i]]);
-            }
+          data = JSON.parse(dataVal);
+          keys = _.keys(data);
+          for (var i = 0; i < keys.length; i++) {
+          $("#" + keys[i]).val(data[keys[i]]);
+          }
           }
           $("form").submit(function () {
-              var data = {};
-              $("#data-values :input").each(function () {
-                  var item = {};
-                  item[$(this).attr("name")] = $(this).val();
-                  $.extend(data,item);
+            var data = {};
+            $("#data-values :input").each(function () {
+              var item = {};
+              item[$(this).attr("name")] = $(this).val();
+              $.extend(data,item);
               });
-              $("#data").val(JSON.stringify(data));
-          });
+            $("#data").val(JSON.stringify(data));
+            });
           $("form").validate({ 
-              errorClass: "error",
-              errorElement: "em",
-              highlight: function(element, errorClass, validClass) {
-                  $(element).addClass(errorClass).removeClass(validClass);
-                  $(element).parents("div.clearfix").addClass(errorClass);
-              },
-              unhighlight: function(element, errorClass, validClass) {
-                  $(element).removeClass(errorClass).addClass(validClass);
-                  $(element).parents("div.clearfix").removeClass(errorClass);
-              }
-          });
-      });
-    </script>
+errorClass: "error",
+errorElement: "em",
+highlight: function(element, errorClass, validClass) {
+$(element).addClass(errorClass).removeClass(validClass);
+$(element).parents("div.clearfix").addClass(errorClass);
+},
+unhighlight: function(element, errorClass, validClass) {
+$(element).removeClass(errorClass).addClass(validClass);
+$(element).parents("div.clearfix").removeClass(errorClass);
+}
+});
+});
+</script>
 </fieldset>
 </form>

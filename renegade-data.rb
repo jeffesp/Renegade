@@ -1,4 +1,5 @@
 require 'sequel'
+require 'json'
 
 # trying to do the simplest thing here, so using Sequel w/o its model classes, and just 
 # doing some raw queries
@@ -11,11 +12,15 @@ class RenegadeData
 
   def initialize
     @DB = Sequel.connect('sqlite://renegade.db')
-    @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4 }
+    @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
   end
 
-  def get_people(person_type)
-    @DB[person_type].all
+  def get_people(person_type, filter=nil)
+    if (filter == nil)
+      @DB[person_type].all
+    else
+      nil
+    end
   end
 
   def get_class_students(class_id)

@@ -1,36 +1,90 @@
-<h2><%= @type.to_s.capitalize %>s</h2>
-<table id="people">
+<!-- <h2><%= @type.to_s.capitalize %>s</h2> -->
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label">Gender</label>
+    <div class="controls">
+      <div id="gender" class="btn-group" data-toggle="buttons-checkbox">
+        <a href="#" class="btn">Male</a>
+        <a href="#" class="btn">Female</a>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Role</label>
+    <div class="controls">
+      <div id="role" class="btn-group" data-toggle="buttons-checkbox">
+        <a href="#" class="btn">Student</a>
+        <a href="#" class="btn">Worker</a>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Meeting</label>
+    <div class="controls">
+      <div id="meeting" class="btn-group" data-toggle="buttons-checkbox">
+        <a href="#" class="btn">J-Hi</a>
+        <a href="#" class="btn">High School</a>
+        <a href="#" class="btn">South Side</a>
+        <a href="#" class="btn">Lighthouse</a>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Grade</label>
+    <div class="controls">
+      <div id="grade" class="btn-group" data-toggle="buttons-checkbox">
+        <a href="#" class="btn">PreK</a>
+        <a href="#" class="btn">K</a>
+        <a href="#" class="btn">1</a>
+        <a href="#" class="btn">2</a>
+        <a href="#" class="btn">3</a>
+        <a href="#" class="btn">4</a>
+        <a href="#" class="btn">5</a>
+        <a href="#" class="btn">6</a>
+        <a href="#" class="btn">7</a>
+        <a href="#" class="btn">8</a>
+        <a href="#" class="btn">9</a>
+        <a href="#" class="btn">10</a>
+        <a href="#" class="btn">11</a>
+        <a href="#" class="btn">12</a>
+        <a href="#" class="btn">Post</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+<table class="table" id="people">
   <thead>
     <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Phone/Address</th>
-      <th></th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Meeting</th>
     </tr>
   </thead>
   <tbody>
   <% @people.each do |person| %>
     <tr>
-      <td><%= person[:first_name] %></td>
-      <td><%= person[:last_name] %></td>
-      <td><span class="info"></span></td>
-      <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'>Details</a> </td>
+      <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
+      <td class="last-static-dataitem"></td>
+      <td></td>
     </tr>
   <% end %>
 </tbody>
 </table>
 
 <div class="row well">
-  <a class="btn primary" href='<%= "/add/#{@type}" %>'>Add New</a>
+  <a class="btn btn-primary" href='<%= "/add/#{@type}" %>'>Add New</a>
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
       var infoArray = [];
       var tableRows = $("#people tbody tr");
       <% @people.each do |person| %> infoArray.push(JSON.parse('<%= person[:data] %>')); <% end %>
-      $.template("basicData", "{{=phone}}/{{=address}}");
+      $.template("basicData", "<td>{{=phone}}</td><td>{{=address}}</td><td>Unknown</td>");
       for (var i = 0; i < tableRows.length; i++) {
-          $(tableRows[i]).find(".info").html($.render(infoArray[i], "basicData"));
+          $(tableRows[i]).find(".last-static-dataitem").after($.render(infoArray[i], "basicData"));
       }
   });
 </script>

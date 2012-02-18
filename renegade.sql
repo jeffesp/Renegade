@@ -4,10 +4,13 @@ CREATE TABLE people (
   id              INTEGER NOT NULL,
   first_name      TEXT NOT NULL,
   last_name       TEXT NOT NULL,
+  gender          TEXT NOT NULL,
+  meeting_id      INTEGER NOT NULL,
+  birthdate       DATETIME NOT NULL,
+  person_type     INTEGER NOT NULL,
   data            TEXT NULL,
   photo_id        INTEGER NULL,
   -- non input items
-  person_type     INTEGER NOT NULL,
   create_date     DATETIME NOT NULL,
   delete_date     DATETIME NULL,
   PRIMARY KEY(id)

@@ -1,47 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Renegade!</title>
-    <meta charset=utf-8 />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/renegade.css" />
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/jquery.validate.js"></script>
-    <script type="text/javascript" src="/js/json2.js"></script>
-    <script type="text/javascript" src="/js/jsrender.js"></script>
-    <script type="text/javascript" src="/js/underscore.js"></script>
-    <script type="text/javascript" src="/js/renegade.js"></script>
+  <title>Renegade!</title>
+  <meta charset=utf-8 />
+  <link rel="stylesheet" href="/css/bootstrap.css" />
+  <link rel="stylesheet" href="/css/renegade.css" />
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/jquery.validate.js"></script>
+  <script type="text/javascript" src="/js/json2.js"></script>
+  <script type="text/javascript" src="/js/jsrender.js"></script>
+  <script type="text/javascript" src="/js/underscore.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/renegade.js"></script>
 </head>
 <body>
-    <div class="topbar">
-      <div class="fill">
-        <div class="container">
-          <a class="brand" href="/">Renegade!</a>
-          <ul class="nav">
-            <li><a href="/list/student">Students</a></li>
-            <li><a href="/list/worker">Workers</a></li>
-            <li><a href="/meetings">Meetings</a></li>
-          </ul>
-        </div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Renegade!</a>
+        <ul class="nav">
+          <li><a href="/list/student">People</a></li>
+        </ul>
+        <form class="navbar-search pull-left">
+          <input type="text" class="search-query" placeholder="Search"/>
+        </form>
       </div>
     </div>
-     <div class="container">
-      <div class="content">
-        <div class="page-header">
-          <h1><%= @title %> <small>Supporting text or tagline</small></h1>
-        </div>
-        <div class="row">
-          <div class="span16">
-            <%= yield %>
-          </div>
-        </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <%= yield %>
       </div>
+    </div>
 
-      <footer>
-      <p>&copy; <%= Date.today.year %></p>
-      </footer>
-
-    </div> <!-- /container -->
-
+    <footer>
+    <p>&copy; <%= Date.today.year %></p>
+    </footer>
+  </div>
 </body>
 </html>

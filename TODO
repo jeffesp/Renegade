@@ -1,6 +1,20 @@
 NOTES
 
-Change so style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
+Search in upper right corner
+
+Did we need to do drop downs for the dates?
+
+Drop current grade spec and use birthday and calculate grade level based on that.
+
+Filtering on
+  Gender
+  Grade
+  Meeting Location
+  Role
+
+Change style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
+
+Deploy to amazon.
 
 Add google map display in view page.
 
@@ -16,8 +30,6 @@ a user that will have access to all.
 
 Add stuff to deal with workers. Most of it is there with Students, need to 
 determine what is different and how that should be handled.
-
-Move to heroku? Get something setup at Xenos? Initiate that process.
 
 Add Script/CSS compression for production environment.
 
