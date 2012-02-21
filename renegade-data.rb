@@ -2,11 +2,7 @@ require 'sequel'
 require 'json'
 
 # trying to do the simplest thing here, so using Sequel w/o its model classes, and just 
-# doing some raw queries
-
-# TODO: write a wrapper using the sandwich code pattern from koans
-# Or, better than that, look at the file open code and see how it accepts
-# a block as an argument.
+# doing some raw queries, probably going to hate that in the future. Already a bit.
 
 class RenegadeData
 
@@ -15,41 +11,56 @@ class RenegadeData
     @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
   end
 
-  def get_people(person_type, filter=nil)
+  def update_people(people)
+    inverted_types = @types.invert
+    people.map do |person|
+      type = inverted_types[person[:person_type]]
+      person[:type] = type
+      if (type == :student)
+        person[:grade] = grade_from_birthday(person[:birthdate])
+      end
+      person
+    end
+  end
+
+  def grade_from_birthday(date)
+    # TODO: should be class level 'static' variable
+    seconds_per_year = 60 * 60 * 24 * 365.25
+    grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
+    age = ((Time.new - date) / seconds_per_year).to_i
+    # index calculation
+    if (age <= 5)
+      grades[0]
+    elsif (age > 5 or age < 19)
+      grades[age-5]
+    else
+      grades[15]
+    end
+  end
+
+  def get_people(filter=nil)
     if (filter == nil)
-      @DB[person_type].all
+      update_people(@DB[:people].all)
     else
       nil
     end
   end
 
-  def get_class_students(class_id)
-    # wow, I am doing 3 joins just to get a student out of their class? maybe I need to review my data model
-    @DB[:people].
-      filter(:person_type => @types[:student], :delete_date => nil).
-        join(:student_roster, :student_id => :id).
-        join(:roster, :id => :roster_id).
-        join(:class, :id => :class_id).
-          filter(:class_id => class_id).all
-  end
-
-  # active is defined as attended in last 2 months by default
-  def get_active_people(last_attendance=(Date.today << 2))
-    @DB[:people].filter(:last_attendance > last_attendance, :delete_date => nil)
-  end
-
   def find_people(name)
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
-    @DB[:people].filter(:delete_date => nil).filter(:first_name.like("%{#name}%")).or(:last_name.like("%{#name}%"))
+    update_people(@DB[:people].filter(:delete_date => nil).filter(:first_name.like("%{#name}%")).or(:last_name.like("%{#name}%")))
   end
 
   def add_person(params)
     local_params = {
       :first_name => params['first_name'],
       :last_name => params['last_name'],
-      :data => params['data'],
+      :gender => params['gender'],
+      :birthdate => params['birthday'],
       :person_type => @types[params['type'].to_sym],
+      :meeting_id => 1,
+      :data => params['data'],
       :create_date => Date.today
     }
     @DB[:people].insert(local_params)
@@ -66,41 +77,8 @@ class RenegadeData
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
-  def get_person(id, person_type)
-    @DB[person_type].filter(:id => id).first
-  end
-
-  def add_student(params)
-    local_params = params.merge({
-      :create_date => Date.today,
-      :person_type => @types[:student]
-    })
-    student_id = @DB[:people].insert(local_params)
-    #roster_id = @DB[:rosters].filter('end_date IS NOT NULL AND class_id = ?', class_id).select(:roster_id).first
-    #classification = 0 #classification = @DB[:classifications].filter('')
-    #@DB[:student_roster].insert( :student_id => student_id, :roster_id => roster_id, :classificatoin => classification)
-  end
-
-  def add_worker(first_name, last_name)
-    @DB[:people].insert(
-      :first_name => first_name,
-      :last_name => last_name,
-      :create_date => Date.today,
-      :person_type => @types[:worker]
-    )
-  end
-
-  def add_parent(first_name, last_name)
-    @DB[:people].insert(
-      :first_name => first_name,
-      :last_name => last_name,
-      :create_date => Date.today,
-      :person_type => @types[:parent]
-    )
-  end
-
-  def add_worker_to_class(class_id)
-
+  def get_person(id)
+    update_people([@DB[:people].filter(:id => id).first]).first
   end
 
   def get_meetings

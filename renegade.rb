@@ -58,52 +58,47 @@ class Renegade < Sinatra::Base
     redirect to("/login"), 302
   end
 
-  get '/list/:type' do
-    @type = params[:type].to_sym
+  get '/people' do
+    # params might be empty -> just show list
+    # params might have data display params -> get people with filter
+    # params might have search text -> do a search
     data = RenegadeData.new
-    @people = data.get_people(@type)
+    @people = []
+    if (params[:search] != nil)
+      @people = nil
+    elsif (params.count > 0) # if not searching, but has params
+      @people = nil
+    else
+      @people = data.get_people
+    end
     erb :people
   end
 
-  get '/list/people.json' do
-    # here we might receive a search term, some filter information, or nothing?
-    content_type :json
-    { :people => 'value1' }.to_json
-  end
-
-  get '/add/:type' do
-    @type = params[:type].to_sym
+  get '/add/person' do
     @person = {}
     @action = 'add'
     erb :addperson
   end
 
-  post '/add/:type' do
+  post '/add/person' do
     personid = RenegadeData.new.add_person(params)
-    redirect to("/view/student/#{personid}"), 302
+    redirect to("/person/#{personid}"), 302
   end
 
-  get '/edit/:type/:id' do
-    @type = params[:type].to_sym
-    @person = RenegadeData.new.get_person(params[:id], params[:type].to_sym) or redirect to("/notfound"), 302
+  get '/edit/person/:id' do
+    @person = RenegadeData.new.get_person(params[:id]) or redirect to("/notfound"), 302
     @action = 'edit'
     erb :addperson
   end
 
-  post '/edit/:type' do
+  post '/edit/person' do
     personid = RenegadeData.new.update_person(params)
-    redirect to("/view/student/#{params[:id]}"), 302
+    redirect to("/person/#{params[:id]}"), 302
   end
 
-  post '/add/:type' do
-    personid = RenegadeData.new.data.add_person(params)
-    redirect to("/view/student/#{personid}"), 302
-  end
-
-  get '/view/:type/:id' do
+  get '/person/:id' do
     data = RenegadeData.new
-    @type = params[:type].to_sym
-    @person = data.get_person(params[:id], params[:type].to_sym) or redirect to("/notfound"), 302
+    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
     erb :viewperson
   end
 

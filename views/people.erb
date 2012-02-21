@@ -1,6 +1,7 @@
-<!-- <h2><%= @type.to_s.capitalize %>s</h2> -->
-<form class="form-horizontal">
-  <div class="control-group">
+<form class="form-horizontal well" action="/people" method="GET">
+  <h2>Filter List </h2>
+  <h5>Until filtered, all information is shown</h5>
+  <div class="control-group" >
     <label class="control-label">Gender</label>
     <div class="controls">
       <div id="gender" class="btn-group" data-toggle="buttons-checkbox">
@@ -8,6 +9,7 @@
         <a href="#" class="btn">Female</a>
       </div>
     </div>
+    <input type="hidden" id="gender" name="gender" />
   </div>
   <div class="control-group">
     <label class="control-label">Role</label>
@@ -15,8 +17,10 @@
       <div id="role" class="btn-group" data-toggle="buttons-checkbox">
         <a href="#" class="btn">Student</a>
         <a href="#" class="btn">Worker</a>
+        <a href="#" class="btn">Student Worker</a>
       </div>
     </div>
+    <input type="hidden" id="role" name="role" />
   </div>
   <div class="control-group">
     <label class="control-label">Meeting</label>
@@ -28,6 +32,7 @@
         <a href="#" class="btn">Lighthouse</a>
       </div>
     </div>
+    <input type="hidden" id="meeting" name="meeting" />
   </div>
   <div class="control-group">
     <label class="control-label">Grade</label>
@@ -47,8 +52,15 @@
         <a href="#" class="btn">10</a>
         <a href="#" class="btn">11</a>
         <a href="#" class="btn">12</a>
-        <a href="#" class="btn">Post</a>
+        <a href="#" class="btn">PostHS</a>
       </div>
+    </div>
+    <input type="hidden" id="grade" name="grade" />
+  </div>
+  <div class="row ">
+    <div class="span3 offset9">
+      <button type="submit" id="update" class="btn btn-primary">Update</button>
+      <button type="button" id="cancel" class="btn">Cancel</button>
     </div>
   </div>
 </form>
@@ -58,6 +70,7 @@
     <tr>
       <th>Name</th>
       <th>Gender</th>
+      <th>Grade</th>
       <th>Phone</th>
       <th>Address</th>
       <th>Meeting</th>
@@ -66,23 +79,24 @@
   <tbody>
   <% @people.each do |person| %>
     <tr>
-      <td><a href='<%= "/view/#{@type}/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
-      <td class="last-static-dataitem"></td>
-      <td></td>
+      <td><a href='<%= "/person/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
+      <td><%= person[:gender].capitalize %></td>
+      <td class="last-static-dataitem"><%= person[:grade] or 'N/A' %></td>
+      <td><%= person[:meeting_id] %></td>
     </tr>
   <% end %>
 </tbody>
 </table>
 
 <div class="row well">
-  <a class="btn btn-primary" href='<%= "/add/#{@type}" %>'>Add New</a>
+  <a class="btn btn-primary" href='<%= "/add/person" %>'>Add New</a>
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
       var infoArray = [];
       var tableRows = $("#people tbody tr");
       <% @people.each do |person| %> infoArray.push(JSON.parse('<%= person[:data] %>')); <% end %>
-      $.template("basicData", "<td>{{=phone}}</td><td>{{=address}}</td><td>Unknown</td>");
+      $.template("basicData", "<td>{{=phone}}</td><td>{{=address}}</td>");
       for (var i = 0; i < tableRows.length; i++) {
           $(tableRows[i]).find(".last-static-dataitem").after($.render(infoArray[i], "basicData"));
       }

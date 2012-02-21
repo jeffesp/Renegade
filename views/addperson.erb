@@ -1,9 +1,30 @@
-<h2><%= @action.capitalize %> <%= @type.to_s.capitalize %></h2>
-<form action="/<%= @action %>/<%= @type %>" method="POST">
+<h2><%= @action.capitalize %> Person</h2>
+<form action="/<%= @action %>/person" method="POST">
     <label>First Name:</label>
     <input type="text" id="first_name" name="first_name" class="required" value="<%= @person[:first_name] %>" />
     <label>Last Name:</label>
     <input type="text" id="last_name" name="last_name" class="required" value="<%= @person[:last_name] %>" />
+    <div class="control-group">
+      <label class="control-label">Gender</label>
+      <div class="controls">
+        <div id="gender-buttons" class="btn-group" data-toggle="buttons-radio">
+          <button type="button" name="gender" value="male" class="btn <%= (@person[:gender] == 'male' or @person[:gender] == nil) ? 'active' : '' %>">Male</button>
+          <button type="button" name="gender" value="female" class="btn <%= (@person[:gender] == 'female') ? 'active' : '' %>">Female</button>
+        </div>
+      </div>
+      <input type="hidden" id="gender" name="gender" value="<%= @person[:gender] or 'male' %>" />
+    </div>
+    <div class="control-group">
+      <label class="control-label">Role</label>
+      <div class="controls">
+        <div id="role-buttons" class="btn-group" data-toggle="buttons-radio">
+          <button type="button" name="type" value="student" class="btn <%= @person[:type] == :student ? 'active' : '' %>">Student</button>
+          <button type="button" name="type" value="worker" class="btn <%= @person[:type] == :worker ? 'active' : '' %>">Worker</button>
+          <button type="button" name="type" value="student_worker" class="btn <%= @person[:type] == :student_worker ? 'active' : '' %>">Student Worker</button>
+        </div>
+      </div>
+      <input type="hidden" id="type" name="type" value="<%= @person[:type] or 'student' %>" />
+    </div>
     <div id="data-values">
       <label>Birthday:</label>
       <input type="date" id="birthday" name="birthday" class="dateISO" />
@@ -31,44 +52,50 @@
       <textarea rows="3" id="notes" name="notes"></textarea>
     </div> 
     <div class="well">
-      <button class="btn btn-primary" type="submit"><%= @action.capitalize %> <%= @type.to_s.capitalize %></button>
+      <button class="btn btn-primary" type="submit"><%= @action.capitalize %> Person</button>
     </div>
     <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
       $(document).ready(function () {
-          var data = null;
-          var dataVal = $("#data").val();
-          var keys;
-          if (dataVal) {
+        var data = null;
+        var dataVal = $("#data").val();
+        var keys;
+        if (dataVal) {
           data = JSON.parse(dataVal);
           keys = _.keys(data);
           for (var i = 0; i < keys.length; i++) {
-          $("#" + keys[i]).val(data[keys[i]]);
+            $("#" + keys[i]).val(data[keys[i]]);
           }
+        }
+        $("form").submit(function () {
+          var data = {};
+          $("#data-values :input").each(function () {
+            var item = {};
+            item[$(this).attr("name")] = $(this).val();
+            $.extend(data,item);
+          });
+          $("#data").val(JSON.stringify(data));
+        });
+        $("form").validate({ 
+          errorClass: "error",
+          errorElement: "em",
+          highlight: function(element, errorClass, validClass) {
+            $(element).addClass(errorClass).removeClass(validClass);
+            $(element).parents("div.clearfix").addClass(errorClass);
+          },
+          unhighlight: function(element, errorClass, validClass) {
+            $(element).removeClass(errorClass).addClass(validClass);
+            $(element).parents("div.clearfix").removeClass(errorClass);
           }
-          $("form").submit(function () {
-            var data = {};
-            $("#data-values :input").each(function () {
-              var item = {};
-              item[$(this).attr("name")] = $(this).val();
-              $.extend(data,item);
-              });
-            $("#data").val(JSON.stringify(data));
-            });
-          $("form").validate({ 
-errorClass: "error",
-errorElement: "em",
-highlight: function(element, errorClass, validClass) {
-$(element).addClass(errorClass).removeClass(validClass);
-$(element).parents("div.clearfix").addClass(errorClass);
-},
-unhighlight: function(element, errorClass, validClass) {
-$(element).removeClass(errorClass).addClass(validClass);
-$(element).parents("div.clearfix").removeClass(errorClass);
-}
-});
-});
-</script>
-</fieldset>
+        });
+        $("#role-buttons button").click(function () {
+          $("#type").val($(this).attr("value"));
+        });
+        $("#gender-buttons button").click(function () {
+          $("#gender").val($(this).attr("value"));
+        });
+      });
+    </script>
+  </fieldset>
 </form>

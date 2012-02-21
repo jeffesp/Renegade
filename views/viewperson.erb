@@ -3,7 +3,8 @@
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
 </dl>
 <div class="clearfix well">
-  <a class="btn primary" href='<%= "/edit/#{@type}/#{@person[:id]}"%>'>Edit</a> 
+  <a class="btn btn-primary" href='<%= "/edit/person/#{@person[:id]}"%>'>Edit</a> 
+  <a class="btn btn-danger" href='<%= "/edit/person/#{@person[:id]}"%>'>Delete</a> 
 </div>
 <div style="display:none">
 Record Created: <%= @person[:create_date] %>
