@@ -50,7 +50,8 @@ class RenegadeData
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
     # this is currently case sensitive! could hack around with lower/upper stuff
-    query = @DB[:people].filter(:delete_date => nil).filter(:first_name.like("%#{name}%")).or(:last_name.like("%#{name}%"))
+    name_lower = "%#{name.downcase}%"
+    query = @DB.fetch("SELECT * FROM people WHERE delete_date IS NULL AND (lower(first_name) LIKE ? OR lower(last_name) LIKE ?)", name_lower, name_lower)
     update_people_for_display(query)
   end
 

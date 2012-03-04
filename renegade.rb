@@ -5,28 +5,35 @@ require 'renegade-data'
 
 class Renegade < Sinatra::Base
 
-  def select_date_keys(params)
-    params.keys.find_all { |key| key.match(/-date-[m|d|y]$/) }
-  end
-  def has_date_keys(params)
-    select_date_keys(params).length > 0
-  end
-  def get_date_value_names(keys)
-    date_names = Set.new
-    keys.each do |k|
-      prefix = '' #key.match(/^(?<name>\w+)-date-[m|d|y]$/)[:name]
-      date_names.add(prefix)
+  def helpers 
+    def select_date_keys(params)
+      params.keys.find_all { |key| /-date-[m|d|y]$/i.match(key) }
     end
-    date_names.to_a
-  end
-  def process_date_keys(params)
-    keys = select_date_keys(params)
-    names = get_date_value_names(keys)
-    
-  end
+    def has_date_keys(params)
+      select_date_keys(params).length > 0
+    end
+    def get_date_value_names(keys)
+      # pull the relevant part of the identifiers out of the keys
+      date_names = Set.new
+      keys.each do |k|
+        key_match = key.match(/^(\w+)-date-[m|d|y]$/i)
+        date_names.add(key_match[1]) unless key_match.nil?
+      end
+      date_names.to_a
+    end
+    def process_date_keys(params)
+      # get the names of the dates we want to create from the inputs
+      # then extract the values associated with those names and create 
+      # a hash that contains the new values
+      keys = select_date_keys(params)
+      names = get_date_value_names(keys)
+    end
 
-  def is_local_url(url)
-    true
+    def is_local_url(url)
+      # TODO: we don't 'want to be an open redirect so we should only recognize relative urls here.
+      true
+    end
+
   end
 
   before do
@@ -59,7 +66,6 @@ class Renegade < Sinatra::Base
       redirect to("/login?showerror=true"), 302
     end
     response.set_cookie("auth", user[:password_hash])
-p params
     if (params[:returnurl] and is_local_url(params[:returnurl]))
       redirect_to = params[:returnurl]
     else
