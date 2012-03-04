@@ -64,6 +64,9 @@
   </div>
 </form>
 
+<% if params[:search] %>
+  <h4>Names that contain: "<%= params[:search] %>"</h4>
+<% end %>
 <table class="table" id="people">
   <thead>
     <tr>
