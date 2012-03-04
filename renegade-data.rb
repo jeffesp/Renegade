@@ -11,7 +11,7 @@ class RenegadeData
     @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
   end
 
-  def update_people(people)
+  def update_people_for_display(people)
     inverted_types = @types.invert
     people.map do |person|
       type = inverted_types[person[:person_type]]
@@ -23,11 +23,11 @@ class RenegadeData
     end
   end
 
-  def grade_from_birthday(date)
-    # TODO: should be class level 'static' variable
+  def grade_from_birthday(birth_date)
+    # TODO: should be class level 'static' method 
     seconds_per_year = 60 * 60 * 24 * 365.25
     grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
-    age = ((Time.new - date) / seconds_per_year).to_i
+    age = ((Time.new - birth_date) / seconds_per_year).to_i
     # index calculation
     if (age <= 5)
       grades[0]
@@ -40,7 +40,7 @@ class RenegadeData
 
   def get_people(filter=nil)
     if (filter == nil)
-      update_people(@DB[:people].all)
+      update_people_for_display(@DB[:people].all)
     else
       nil
     end
@@ -49,7 +49,9 @@ class RenegadeData
   def find_people(name)
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
-    update_people(@DB[:people].filter(:delete_date => nil).filter(:first_name.like("%{#name}%")).or(:last_name.like("%{#name}%")))
+    # this is currently case sensitive! could hack around with lower/upper stuff
+    query = @DB[:people].filter(:delete_date => nil).filter(:first_name.like("%#{name}%")).or(:last_name.like("%#{name}%"))
+    update_people_for_display(query)
   end
 
   def add_person(params)
@@ -71,14 +73,17 @@ class RenegadeData
       :id => params['id'],
       :first_name => params['first_name'],
       :last_name => params['last_name'],
-      :data => params['data'],
-      :person_type => @types[params['type'].to_sym]
+      :gender => params['gender'],
+      :birthdate => params['birthday'],
+      :person_type => @types[params['type'].to_sym],
+      :meeting_id => 1,
+      :data => params['data']
     }
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
   def get_person(id)
-    update_people([@DB[:people].filter(:id => id).first]).first
+    update_people_for_display([@DB[:people].filter(:id => id).first]).first
   end
 
   def get_meetings

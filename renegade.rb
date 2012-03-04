@@ -4,17 +4,41 @@ require 'bcrypt'
 require 'renegade-data'
 
 class Renegade < Sinatra::Base
+
+  def select_date_keys(params)
+    params.keys.find_all { |key| key.match(/-date-[m|d|y]$/) }
+  end
+  def has_date_keys(params)
+    select_date_keys(params).length > 0
+  end
+  def get_date_value_names(keys)
+    date_names = Set.new
+    keys.each do |k|
+      prefix = '' #key.match(/^(?<name>\w+)-date-[m|d|y]$/)[:name]
+      date_names.add(prefix)
+    end
+    date_names.to_a
+  end
+  def process_date_keys(params)
+    keys = select_date_keys(params)
+    names = get_date_value_names(keys)
+    
+  end
+
+  def is_local_url(url)
+    true
+  end
+
   before do
     # check authenticaion cookie exists if not logging in
-    # TODO: content of cookie and regex for login before the ? are needed
-    if !request.cookies["auth"] and request.path != '/login'
+    if !request.cookies["auth"] and !/^\/login(\?returnurl=[\w\/]+)?$/i.match(request.path)
       redirect to("/login?returnurl=#{request.path}"), 302
     end
-    # create conn to db?
+
+  
   end
 
   after do
-    # close conn to db?
   end
 
 
@@ -35,8 +59,13 @@ class Renegade < Sinatra::Base
       redirect to("/login?showerror=true"), 302
     end
     response.set_cookie("auth", user[:password_hash])
-    # TODO: redirect back to where they came from. Make sure we are not an open redirect here.
-    redirect "/", 302
+p params
+    if (params[:returnurl] and is_local_url(params[:returnurl]))
+      redirect_to = params[:returnurl]
+    else
+      redirect_to = '/'
+    end
+    redirect redirect_to, 302
   end
 
   get '/create' do
@@ -65,9 +94,9 @@ class Renegade < Sinatra::Base
     data = RenegadeData.new
     @people = []
     if (params[:search] != nil)
-      @people = nil
+      @people = data.find_people(params[:search])
     elsif (params.count > 0) # if not searching, but has params
-      @people = nil
+      @people =[]
     else
       @people = data.get_people
     end

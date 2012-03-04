@@ -1,12 +1,11 @@
 <form class="form-horizontal well" action="/people" method="GET">
   <h2>Filter List </h2>
-  <h5>Until filtered, all information is shown</h5>
   <div class="control-group" >
     <label class="control-label">Gender</label>
     <div class="controls">
       <div id="gender" class="btn-group" data-toggle="buttons-checkbox">
-        <a href="#" class="btn">Male</a>
-        <a href="#" class="btn">Female</a>
+        <button type="button" name="male" class="btn">Male</button>
+        <button type="button" name="female" class="btn">Female</button>
       </div>
     </div>
     <input type="hidden" id="gender" name="gender" />
@@ -100,5 +99,11 @@
       for (var i = 0; i < tableRows.length; i++) {
           $(tableRows[i]).find(".last-static-dataitem").after($.render(infoArray[i], "basicData"));
       }
+      $("#gender button").click(function () {
+          if ($(this).selected()) {
+          }
+          else {
+          }
+      });
   });
 </script>
