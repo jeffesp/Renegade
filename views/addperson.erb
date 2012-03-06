@@ -8,7 +8,7 @@
       <label class="control-label">Gender</label>
       <div class="controls">
         <div id="gender-buttons" class="btn-group" data-toggle="buttons-radio">
-          <button type="button" name="gender" value="male" class="btn <%= (@person[:gender] == 'male' or @person[:gender] == nil) ? 'active' : '' %>">Male</button>
+          <button type="button" name="gender" value="male" class="btn <%= (@person[:gender] == 'male' or @person[:gender].nil?) ? 'active' : '' %>">Male</button>
           <button type="button" name="gender" value="female" class="btn <%= (@person[:gender] == 'female') ? 'active' : '' %>">Female</button>
         </div>
       </div>
@@ -18,7 +18,7 @@
       <label class="control-label">Role</label>
       <div class="controls">
         <div id="role-buttons" class="btn-group" data-toggle="buttons-radio">
-          <button type="button" name="type" value="student" class="btn <%= @person[:type] == :student ? 'active' : '' %>">Student</button>
+          <button type="button" name="type" value="student" class="btn <%= (@person[:type] == :student or @person[:type].nil?) ? 'active'  : '' %>">Student</button>
           <button type="button" name="type" value="worker" class="btn <%= @person[:type] == :worker ? 'active' : '' %>">Worker</button>
           <button type="button" name="type" value="student_worker" class="btn <%= @person[:type] == :student_worker ? 'active' : '' %>">Student Worker</button>
         </div>

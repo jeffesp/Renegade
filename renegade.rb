@@ -121,7 +121,7 @@ class Renegade < Sinatra::Base
   end
 
   get '/add/person' do
-    @person = {}
+    @person = { :first_attendance => Date.today }
     @action = 'add'
     erb :addperson
   end

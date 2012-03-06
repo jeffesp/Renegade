@@ -55,15 +55,29 @@ class RenegadeData
     update_people_for_display(query)
   end
 
+  def format_phone(data)
+    values = JSON.parse(data)
+    if values['phone']
+      base_phone = values['phone'].gsub(/[\s\(\).-]+/, "")
+      p base_phone
+      if base_phone.length == 11
+        base_phone = base_phone.slice(1..-1)
+      end
+      m = base_phone.match(/(\d{3})(\d{3})(\d{4})/)
+      values['phone'] = "#{m[1]}-#{m[2]}-#{m[3]}" if m
+    end
+    values.to_json
+  end
+
   def add_person(params)
     local_params = {
-      :first_name => params['first_name'],
-      :last_name => params['last_name'],
-      :gender => params['gender'],
-      :birthdate => params['birthday'],
-      :person_type => @types[params['type'].to_sym],
+      :first_name => params[:first_name],
+      :last_name => params[:last_name],
+      :gender => params[:gender],
+      :birthdate => params[:birthdate],
+      :person_type => @types[params[:type].to_sym],
       :meeting_id => 1,
-      :data => params['data'],
+      :data => format_phone(params[:data]),
       :create_date => Date.today
     }
     @DB[:people].insert(local_params)
@@ -71,17 +85,15 @@ class RenegadeData
 
   def update_person(params)
     local_params = {
-      :id => params['id'],
-      :first_name => params['first_name'],
-      :last_name => params['last_name'],
-      :gender => params['gender'],
-      :birthdate => params['birthdate'],
-      :person_type => @types[params['type'].to_sym],
+      :id => params[:id],
+      :first_name => params[:first_name],
+      :last_name => params[:last_name],
+      :gender => params[:gender],
+      :birthdate => params[:birthdate],
+      :person_type => @types[params[:type].to_sym],
       :meeting_id => 1,
-      :data => params['data']
+      :data => format_phone(params[:data])
     }
-    p params
-    p local_params
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
