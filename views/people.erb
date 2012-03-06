@@ -24,12 +24,7 @@
   <div class="control-group">
     <label class="control-label">Meeting</label>
     <div class="controls">
-      <div id="meeting" class="btn-group" data-toggle="buttons-checkbox">
-        <a href="#" class="btn">J-Hi</a>
-        <a href="#" class="btn">High School</a>
-        <a href="#" class="btn">South Side</a>
-        <a href="#" class="btn">Lighthouse</a>
-      </div>
+      <%= partial(:meetings, { :meetings => @meetings }) %>
     </div>
     <input type="hidden" id="meeting" name="meeting" />
   </div>

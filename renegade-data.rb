@@ -117,18 +117,8 @@ class RenegadeData
     update_people_for_display(@DB[:people].filter(:id => id)).first
   end
 
-  def get_meetings
-    @DB[:meetings]
-  end
-
-  def add_meeting(date)
-    @DB[:meetings].insert(
-      :date => date
-    )
-  end
-
-  def get_rosters
-    @DB[:rosters].filter('end_date IS NOT NULL')
+  def get_locations
+    @DB[:locations].all
   end
 
   # site user stuff

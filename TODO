@@ -3,7 +3,6 @@ NOTES
 Disable dates that are not required.
 Update view person page
 Need list of meetings and access methods so we can query that and also to save meeting location
-Format phone number on submission
 
 Implement the filtering on the main page:
   - first make so the values are submitted

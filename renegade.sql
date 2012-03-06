@@ -133,9 +133,10 @@ INSERT INTO classifications (abbreviation, name) VALUES ('RN', 'Returning New');
 INSERT INTO classifications (abbreviation, name) VALUES ('O', 'Original');
 INSERT INTO classifications (abbreviation, name) VALUES ('FT', 'First Timer');
 INSERT INTO classifications (abbreviation, name) VALUES ('VIS', 'Visitor');
-INSERT INTO locations (name, description, create_date) VALUES ('JHi', 'Jr. High and below', date('now'));
-INSERT INTO locations (name, description, create_date) VALUES ('Hi', 'High School', date('now'));
-INSERT INTO locations (name, description, create_date) VALUES ('South', 'South Side', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('J-Hi', 'Jr. High and below', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('High School', 'High School', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('South Side', 'South Side', date('now'));
+INSERT INTO locations (name, description, create_date) VALUES ('Lighthouse', 'Lighthouse', date('now'));
 
 CREATE VIEW student AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 1 AND delete_date IS NULL;
 CREATE VIEW worker  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 2 AND delete_date IS NULL;

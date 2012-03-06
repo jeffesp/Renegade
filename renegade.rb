@@ -117,11 +117,14 @@ class Renegade < Sinatra::Base
     else
       @people = data.get_people
     end
+    @meetings = data.get_locations or []
     erb :people
   end
 
   get '/add/person' do
+    data = RenegadeData.new
     @person = { :first_attendance => Date.today }
+    @meetings = data.get_locations or []
     @action = 'add'
     erb :addperson
   end
@@ -132,7 +135,9 @@ class Renegade < Sinatra::Base
   end
 
   get '/edit/person/:id' do
-    @person = RenegadeData.new.get_person(params[:id]) or redirect to("/notfound"), 302
+    data = RenegadeData.new
+    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
+    @meetings = data.get_locations or []
     @action = 'edit'
     erb :addperson
   end

@@ -15,7 +15,7 @@
       <input type="hidden" id="gender" name="gender" value="<%= @person[:gender] or 'male' %>" />
     </div>
     <div class="control-group">
-      <label class="control-label">Role</label>
+      <label class="control-label">Role:</label>
       <div class="controls">
         <div id="role-buttons" class="btn-group" data-toggle="buttons-radio">
           <button type="button" name="type" value="student" class="btn <%= (@person[:type] == :student or @person[:type].nil?) ? 'active'  : '' %>">Student</button>
@@ -24,6 +24,12 @@
         </div>
       </div>
       <input type="hidden" id="type" name="type" value="<%= @person[:type] or 'student' %>" />
+    </div>
+    <div class="control-group">
+      <label class="control-label">Meeting:</label>
+      <div class="controls">
+        <%= partial(:meetings, { :meetings => @meetings }) %>
+      </div>
     </div>
     <label>Birthday:</label>
     <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>

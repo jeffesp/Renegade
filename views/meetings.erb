@@ -1,0 +1,6 @@
+<div id="meeting" class="btn-group" data-toggle="buttons-checkbox">
+  <% meetings.each do |meeting| %>
+  <!-- do something about current selection -->
+  <button type="button" name="<%= "meeting#{meeting[:id]}" %>" class="btn"><%= meeting[:name] %></button>
+  <% end %>
+</div>
