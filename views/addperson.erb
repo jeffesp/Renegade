@@ -25,34 +25,9 @@
       </div>
       <input type="hidden" id="type" name="type" value="<%= @person[:type] or 'student' %>" />
     </div>
+    <label>Birthday:</label>
+    <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>
     <div id="data-values">
-      <label>Birthday:</label>
-      <div>
-        <select id="birthday-date-m" class="span1">
-          <option value="1">Jan</option>
-          <option value="2">Feb</option>
-          <option value="3">Mar</option>
-          <option value="4">Apr</option>
-          <option value="5">May</option>
-          <option value="6">Jun</option>
-          <option value="7">Jul</option>
-          <option value="8">Aug</option>
-          <option value="9">Sep</option>
-          <option value="10">Oct</option>
-          <option value="11">Nov</option>
-          <option value="12">Dec</option>
-        </select>
-        <select id="birthday-date-d" class="span1">
-          <% 1.upto 31 do |i| %>
-            <option value="<%= i %>"><%= i %></option>
-          <% end %>
-        </select>
-        <select id="birthday-date-y" class="span1">
-          <% 2012.downto 1900 do |i| %>
-            <option value="<%= i %>"><%= i %></option>
-          <% end %>
-        </select>
-      </div>
       <label>Phone:</label>
       <input type="text" id="phone" name="phone" />
       <label>Address:</label>
@@ -66,11 +41,11 @@
       <label >Zip:</label>
       <input type="text" class="span2" id="zip" name="zip" class="digits"  />
       <label>First Attendance:</label>
-      <input type="date" id="first_attendance" name="first_attendance" class="dateISO" />
+      <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
       <label>Salvation Date:</label>
-      <input type="date" id="salvation_date" name="salvation_date" class="dateISO" />
+      <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
       <label>Baptism Date:</label>
-      <input type="date" id="baptism_date" name="baptism_date" class="dateISO" />
+      <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
       <label>Allergy or Medical Information:</label>
       <textarea rows="3" id="allergy_medical" name="allergy_medical"></textarea>
       <label>Notes:</label>
@@ -122,5 +97,4 @@
         });
       });
     </script>
-  </fieldset>
 </form>

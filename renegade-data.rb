@@ -19,7 +19,7 @@ class RenegadeData
       if (type == :student)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
-      person
+      person.merge(JSON.parse(person[:data]))
     end
   end
 
@@ -75,16 +75,18 @@ class RenegadeData
       :first_name => params['first_name'],
       :last_name => params['last_name'],
       :gender => params['gender'],
-      :birthdate => params['birthday'],
+      :birthdate => params['birthdate'],
       :person_type => @types[params['type'].to_sym],
       :meeting_id => 1,
       :data => params['data']
     }
+    p params
+    p local_params
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
   def get_person(id)
-    update_people_for_display([@DB[:people].filter(:id => id).first]).first
+    update_people_for_display(@DB[:people].filter(:id => id)).first
   end
 
   def get_meetings
