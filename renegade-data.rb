@@ -55,16 +55,32 @@ class RenegadeData
     update_people_for_display(query)
   end
 
-  def format_phone(data)
-    values = JSON.parse(data)
+  # changes the values hash to remove the split date (name-date-{y,m,d}) members.
+  # replaces them with a value at 'name' that is a Date value of the split members.
+  def format_date!(values, name)
+    if values["#{name}-date-y"]
+      values[name] = Date.new(values["#{name}-date-y"].to_i, values["#{name}-date-m"].to_i, values["#{name}-date-d"].to_i)
+      values.delete_if { |key, value| key.include?("#{name}-date") }
+    end
+    values
+  end
+  # takes the 'phone' element from the values array and changes it to make sure it is formatted ###-###-####
+  def format_phone!(values)
     if values['phone']
       base_phone = values['phone'].gsub(/[\s\(\).-]+/, "")
-      p base_phone
       if base_phone.length == 11
         base_phone = base_phone.slice(1..-1)
       end
       m = base_phone.match(/(\d{3})(\d{3})(\d{4})/)
       values['phone'] = "#{m[1]}-#{m[2]}-#{m[3]}" if m
+    end
+    values
+  end
+  def format_json_data(data)
+    values = JSON.parse(data)
+    format_phone!(values)
+    ['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
+      format_date!(values, date)
     end
     values.to_json
   end
@@ -77,7 +93,7 @@ class RenegadeData
       :birthdate => params[:birthdate],
       :person_type => @types[params[:type].to_sym],
       :meeting_id => 1,
-      :data => format_phone(params[:data]),
+      :data => format_json_data(params[:data]),
       :create_date => Date.today
     }
     @DB[:people].insert(local_params)
@@ -92,7 +108,7 @@ class RenegadeData
       :birthdate => params[:birthdate],
       :person_type => @types[params[:type].to_sym],
       :meeting_id => 1,
-      :data => format_phone(params[:data])
+      :data => format_json_data(params[:data])
     }
     @DB[:people].filter(:id => params['id']).update(local_params)
   end

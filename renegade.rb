@@ -28,7 +28,7 @@ class Renegade < Sinatra::Base
     date_names.to_a
   end
   def date_from_params(name, params)
-    Date::civil(params[name + '-date-y'].to_i, params[name + '-date-m'].to_i, params[name + '-date-d'].to_i).to_s
+    Date::civil(params["#{name}-date-y"].to_i, params["#{name}-date-m"].to_i, params["#{name}-date-d"].to_i).to_s
   end
   def process_date_keys(params)
     # get the names of the dates we want to create from the inputs
