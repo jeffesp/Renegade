@@ -28,7 +28,7 @@
     <div class="control-group">
       <label class="control-label">Meeting:</label>
       <div class="controls">
-        <%= partial(:meetings, { :meetings => @meetings }) %>
+        <%= partial(:meetings, { :meetings => @meetings, :meeting_id => (@person[:meeting_id] or 1), :selection_type => "radio" }) %>
       </div>
     </div>
     <label>Birthday:</label>
@@ -63,7 +63,7 @@
     <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
-      $(document).ready(function () {
+      $(function () {
         var data = null;
         var dataVal = $("#data").val();
         var keys;
@@ -100,6 +100,9 @@
         });
         $("#gender-buttons button").click(function () {
           $("#gender").val($(this).attr("value"));
+        });
+        $("#meeting-buttons button").click(function () {
+          $("#meeting").val($(this).attr("value"));
         });
       });
     </script>

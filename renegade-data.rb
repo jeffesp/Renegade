@@ -107,7 +107,7 @@ class RenegadeData
       :gender => params[:gender],
       :birthdate => params[:birthdate],
       :person_type => @types[params[:type].to_sym],
-      :meeting_id => 1,
+      :meeting_id => params[:meeting],
       :data => format_json_data(params[:data])
     }
     @DB[:people].filter(:id => params['id']).update(local_params)

@@ -24,7 +24,7 @@
   <div class="control-group">
     <label class="control-label">Meeting</label>
     <div class="controls">
-      <%= partial(:meetings, { :meetings => @meetings }) %>
+      <%= partial(:meetings, { :meetings => @meetings, :meeting_id => nil, :selection_type => "checkbox" }) %>
     </div>
     <input type="hidden" id="meeting" name="meeting" />
   </div>
@@ -79,7 +79,7 @@
       <td><a href='<%= "/person/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
       <td><%= person[:gender].capitalize %></td>
       <td class="last-static-dataitem"><%= person[:grade] or 'N/A' %></td>
-      <td><%= person[:meeting_id] %></td>
+      <td><%= @meetings[person[:meeting_id] - 1][:name] %></td> <!--HACK: -1 sucks here -->
     </tr>
   <% end %>
 </tbody>
@@ -89,7 +89,7 @@
   <a class="btn btn-primary" href='<%= "/add/person" %>'>Add New</a>
 </div>
 <script type="text/javascript">
-  $(document).ready(function () {
+  $(function () {
       var infoArray = [];
       var tableRows = $("#people tbody tr");
       <% @people.each do |person| %> infoArray.push(JSON.parse('<%= person[:data] %>')); <% end %>

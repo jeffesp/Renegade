@@ -1,6 +1,12 @@
 <dl id="person">
   <dt>Name</dt>
   <dd><%= @person[:first_name] %> <%= @person[:last_name] %></dd>
+  <dt>Gender</dt>
+  <dd><%= @person[:gender].capitalize %> </dd>
+  <dt>Role</dt>
+  <dd><%= @person[:gender].capitalize %> </dd>
+  <dt>Meeting</dt>
+  <dd><%= @meetings[@person[:meeting_id]-1][:name] %></dd> <!-- HACK: -1 sucks! -->
 </dl>
 <div class="clearfix well">
   <a class="btn btn-primary" href='<%= "/edit/person/#{@person[:id]}"%>'>Edit</a> 
@@ -26,6 +32,12 @@ Record Created: <%= @person[:create_date] %>
   <dt>Birthday</dt>
   <dd>{{= birthday}}</dd>
   {{/if}}
+  <dt>Allergy/Medical Condition</dt>
+  <dd>{{itemOrNone allergy_medical}}</dd>
+  <dt>Notes</dt>
+  <dd>{{itemOrNone notes}}</dd>
+  <dt>First Attendance</dt>
+  <dd>{{= first_attendance}}</dd>
   {{#if salvation_date }}
   <dt>Salvation Date</dt>
   <dd>{{= salvation_date}}</dd>
@@ -34,22 +46,10 @@ Record Created: <%= @person[:create_date] %>
   <dt>Baptism Date</dt>
   <dd>{{= baptism_date}}</dd>
   {{/if}}
-  <dt>Allergy/Medical Condition</dt>
-  <dd>{{itemOrNone allergy_medical}}</dd>
-  <dt>Notes</dt>
-  <dd>{{itemOrNone notes}}</dd>
-  <dt>First Attendance</dt>
-  <dd>{{= first_attendance}}</dd>
 </script>
 
 <script type="text/javascript">
-  $.views.registerTags({
-      itemOrNone: function (value) {
-          return value || "None";
-      }
-  });
-
-  $(document).ready(function () {
+  $(function () {
       var data = JSON.parse('<%= @person[:data] %>');
       $("#person").append(
         $("#dataItem").render(data)

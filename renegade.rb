@@ -149,6 +149,7 @@ class Renegade < Sinatra::Base
 
   get '/person/:id' do
     data = RenegadeData.new
+    @meetings = data.get_locations or []
     @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
     erb :viewperson
   end

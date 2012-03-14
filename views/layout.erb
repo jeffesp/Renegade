@@ -5,13 +5,12 @@
   <meta charset=utf-8 />
   <link rel="stylesheet" href="/css/bootstrap.css" />
   <link rel="stylesheet" href="/css/renegade.css" />
-  <script type="text/javascript" src="/js/jquery.js"></script>
-  <script type="text/javascript" src="/js/jquery.validate.js"></script>
-  <script type="text/javascript" src="/js/json2.js"></script>
-  <script type="text/javascript" src="/js/jsrender.js"></script>
-  <script type="text/javascript" src="/js/underscore.js"></script>
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
-  <script type="text/javascript" src="/js/renegade.js"></script>
+  <script type="text/javascript">
+    window.q = [];
+    window.$=function(f){
+      q.push(f);
+    };
+  </script>
 </head>
 <body>
   <div class="navbar navbar-fixed-top">
@@ -38,5 +37,23 @@
     <p>&copy; <%= Date.today.year %></p>
     </footer>
   </div>
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/jquery.validate.js"></script>
+  <script type="text/javascript" src="/js/json2.js"></script>
+  <script type="text/javascript" src="/js/jsrender.js"></script>
+  <script type="text/javascript" src="/js/underscore.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/renegade.js"></script>
+  <script type="text/javascript">
+  $.views.registerTags({
+      itemOrNone: function (value) {
+          return value || "None";
+      }
+  });
+
+  $(function() {
+      $.each(window.q, function(index, f) { f.call(document); })
+  });
+  </script>
 </body>
 </html>
