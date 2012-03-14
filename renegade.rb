@@ -139,6 +139,7 @@ class Renegade < Sinatra::Base
     @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
     @meetings = data.get_locations or []
     @action = 'edit'
+    p @person
     erb :addperson
   end
 

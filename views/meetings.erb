@@ -3,4 +3,4 @@
     <button type="button" name="<%= "meeting-#{m[:id]}" %>" value="<%= m[:id] %>" class="btn <%= (meeting_id == m[:id]) ? 'active'  : '' %>"><%= m[:name] %></button>
   <% end %>
 </div>
-<input type="hidden" id="meeting" name="meeting" value="" />
+<input type="hidden" id="meeting" name="meeting" value="<%= meeting_id %>" />
