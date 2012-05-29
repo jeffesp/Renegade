@@ -12,6 +12,7 @@ class RenegadeData
   end
 
   def update_people_for_display(people)
+    people = people.filter(:delete_date => nil)
     inverted_types = @types.invert
     people.map do |person|
       type = inverted_types[person[:person_type]]
@@ -19,12 +20,19 @@ class RenegadeData
       if (type == :student)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
-      person.merge(JSON.parse(person[:data]))
+      json_data = JSON.parse(person[:data])
+      ['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
+        json_data[date] = Date.parse(json_data[date]) unless json_data[date].nil? or json_data[date].empty?
+      end
+      person.merge(json_data)
     end
   end
 
   def grade_from_birthday(birth_date)
     # TODO: should be class level 'static' method 
+    if birth_date.nil?
+      return "N/A"
+    end
     seconds_per_year = 60 * 60 * 24 * 365.25
     grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
     age = ((Time.new - birth_date) / seconds_per_year).to_i
@@ -40,7 +48,7 @@ class RenegadeData
 
   def get_people(filter=nil)
     if (filter == nil)
-      update_people_for_display(@DB[:people].all)
+      update_people_for_display(@DB[:people])
     else
       nil
     end
@@ -49,7 +57,7 @@ class RenegadeData
   def find_people(name)
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
-    # this is currently case sensitive! could hack around with lower/upper stuff
+    # TODO: somehow this is interpreted as case sensitive. need to work around with .downcase and lower()
     name_lower = "%#{name.downcase}%"
     query = @DB.fetch("SELECT * FROM people WHERE delete_date IS NULL AND (lower(first_name) LIKE ? OR lower(last_name) LIKE ?)", name_lower, name_lower)
     update_people_for_display(query)
@@ -58,11 +66,11 @@ class RenegadeData
   # changes the values hash to remove the split date (name-date-{y,m,d}) members.
   # replaces them with a value at 'name' that is a Date value of the split members.
   def format_date!(values, name)
-    if values["#{name}-date-y"]
+    if !values["#{name}-date-y"].empty?
       values[name] = Date.new(values["#{name}-date-y"].to_i, values["#{name}-date-m"].to_i, values["#{name}-date-d"].to_i)
-      values.delete_if { |key, value| key.include?("#{name}-date") }
     end
-    values
+    values.delete_if { |key, value| key.include?("#{name}-date") }
+    return values
   end
   # takes the 'phone' element from the values array and changes it to make sure it is formatted ###-###-####
   def format_phone!(values)
@@ -74,7 +82,7 @@ class RenegadeData
       m = base_phone.match(/(\d{3})(\d{3})(\d{4})/)
       values['phone'] = "#{m[1]}-#{m[2]}-#{m[3]}" if m
     end
-    values
+    return values
   end
   def format_json_data(data)
     values = JSON.parse(data)
@@ -113,8 +121,14 @@ class RenegadeData
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
+  def delete_person(id)
+    @DB[:people].filter(:id => id).update(:delete_date => Date.today)
+  end
+
   def get_person(id)
-    update_people_for_display(@DB[:people].filter(:id => id)).first
+    val = update_people_for_display(@DB[:people].filter(:id => id)).first
+    p val
+    return val
   end
 
   def get_locations

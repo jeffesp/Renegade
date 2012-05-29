@@ -1,14 +1,18 @@
+<%= current_value.nil? %>
 <select name="<%= name %>-date-m" id="<%= name %>-date-m" class="span1">
+  <option value="">--</option>
   <% 1.upto 12 do |i| %>
     <option value="<%= i %>" <%= selected='selected' if !current_value.nil? and current_value.month == i %>><%= Date::ABBR_MONTHNAMES[i] %></option>
   <% end %>
 </select>
 <select name="<%= name %>-date-d" id="<%= name %>-date-d" class="span1">
+  <option value="">--</option>
   <% 1.upto 31 do |i| %>
     <option value="<%= i %>" <%= selected='selected' if !current_value.nil? and current_value.day == i %>><%= i %></option>
   <% end %>
 </select>
 <select name="<%= name %>-date-y" id="<%= name %>-date-y" class="span1">
+  <option value="">--</option>
   <% 2012.downto 1900 do |i| %>
     <option value="<%= i %>" <%= selected='selected' if !current_value.nil? and current_value.year == i %>><%= i %></option>
   <% end %>

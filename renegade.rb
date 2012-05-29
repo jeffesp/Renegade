@@ -10,6 +10,16 @@ class Renegade < Sinatra::Base
     def partial (template, locals = {})
         erb(template, :layout => false, :locals => locals)
     end
+    def role_icons(role)
+      val = ""
+      if (role == :student)
+        val += "<i class='icon-book'></i>"
+      end
+      if (role == :worker or role == :student_worker)
+        val = val + "<i class='icon-user'></i>"
+      end
+      val
+    end
   end
 
   def select_date_keys(params)
@@ -28,7 +38,11 @@ class Renegade < Sinatra::Base
     date_names.to_a
   end
   def date_from_params(name, params)
-    Date::civil(params["#{name}-date-y"].to_i, params["#{name}-date-m"].to_i, params["#{name}-date-d"].to_i).to_s
+    y, m, d = "#{name}-date-y", "#{name}-date-m", "#{name}-date-d"
+    if (params[y].empty? or params[m].empty? or params[d].empty?)
+      return nil
+    end
+    Date::civil(params[y].to_i, params[m].to_i, params[d].to_i).to_s
   end
   def process_date_keys(params)
     # get the names of the dates we want to create from the inputs
@@ -129,6 +143,13 @@ class Renegade < Sinatra::Base
     erb :addperson
   end
 
+  get '/person/:id' do
+    data = RenegadeData.new
+    @meetings = data.get_locations or []
+    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
+    erb :viewperson
+  end
+
   post '/add/person' do
     personid = RenegadeData.new.add_person(params)
     redirect to("/person/#{personid}"), 302
@@ -139,7 +160,6 @@ class Renegade < Sinatra::Base
     @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
     @meetings = data.get_locations or []
     @action = 'edit'
-    p @person
     erb :addperson
   end
 
@@ -148,11 +168,9 @@ class Renegade < Sinatra::Base
     redirect to("/person/#{params[:id]}"), 302
   end
 
-  get '/person/:id' do
-    data = RenegadeData.new
-    @meetings = data.get_locations or []
-    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
-    erb :viewperson
+  get '/delete/person/:id' do
+    RenegadeData.new.delete_person(params[:id])
+    redirect to("/people"), 302
   end
 
   # TODO: have some sort of session stuff going on here to display more information

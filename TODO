@@ -1,8 +1,6 @@
 NOTES
 
-Meeting and date controls are not working on edit page?
-Disable dates that are not required.
-Update view person page delete button 
+Dates pickers do not seem to get their value when loaded?
 
 Implement the filtering on the main page:
   - first make so the values are submitted
@@ -10,8 +8,6 @@ Implement the filtering on the main page:
   - then do the display of the current filter "Female Students in K-5"
 
 Change style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
-
-Move jquery to end, queue the doc.ready stuff.
 
 Deploy to amazon.
 
@@ -22,13 +18,6 @@ It would be nice to have some sort of route or url creation code rather than man
 Allow for entry of a second address for pickup? Make pickup address the first entered, and 
 have a secondary for other addresses? - NOTE: just enter in "notes" for now, make data entered
 the most used even if it isn't the residence or home phone number.
-
-Add filtering by user for the people displayed - don't need to see South ppl for 
-someone who is in HS group. But need to allow them to expand to that, or have
-a user that will have access to all.
-
-Add stuff to deal with workers. Most of it is there with Students, need to 
-determine what is different and how that should be handled.
 
 Add Script/CSS compression for production environment.
 
