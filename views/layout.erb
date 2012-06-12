@@ -11,6 +11,7 @@
       q.push(f);
     };
   </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
 </head>
 <body>
   <div class="navbar navbar-fixed-top">
@@ -45,12 +46,6 @@
   <script type="text/javascript" src="/js/bootstrap.js"></script>
   <script type="text/javascript" src="/js/renegade.js"></script>
   <script type="text/javascript">
-  $.views.registerTags({
-      itemOrNone: function (value) {
-          return value || "None";
-      }
-  });
-
   $(function() {
       $.each(window.q, function(index, f) { f.call(document); })
   });

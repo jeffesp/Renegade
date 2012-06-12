@@ -51,7 +51,7 @@ class Renegade < Sinatra::Base
     keys = select_date_keys(params)
     names = get_date_value_names(keys)
 
-    names.each do |name| params[name.to_sym] = date_from_params(name, params) end
+    names.each do |name| params[name] = date_from_params(name, params) end
 
     # remove no longer necessary values
     keys.each do |key| params.delete(key) end
@@ -132,6 +132,7 @@ class Renegade < Sinatra::Base
       @people = data.get_people
     end
     @meetings = data.get_locations or []
+    p @people
     erb :people
   end
 

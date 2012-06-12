@@ -18,12 +18,12 @@
       <label class="control-label">Role:</label>
       <div class="controls">
         <div id="role-buttons" class="btn-group" data-toggle="buttons-radio">
-          <button type="button" name="type" value="student" class="btn <%= (@person[:type] == :student or @person[:type].nil?) ? 'active'  : '' %>">Student</button>
-          <button type="button" name="type" value="worker" class="btn <%= @person[:type] == :worker ? 'active' : '' %>">Worker</button>
-          <button type="button" name="type" value="student_worker" class="btn <%= @person[:type] == :student_worker ? 'active' : '' %>">Student Worker</button>
+          <button type="button" name="type" value="student" class="btn <%= (@person[:person_type] == :student or @person[:person_type].nil?) ? 'active'  : '' %>">Student</button>
+          <button type="button" name="type" value="worker" class="btn <%= @person[:person_type] == :worker ? 'active' : '' %>">Worker</button>
+          <button type="button" name="type" value="student_worker" class="btn <%= @person[:person_type] == :student_worker ? 'active' : '' %>">Student Worker</button>
         </div>
       </div>
-      <input type="hidden" id="type" name="type" value="<%= @person[:type] or 'student' %>" />
+      <input type="hidden" id="person_type" name="person_type" value="<%= @person[:person_type] or 'student' %>" />
     </div>
     <div class="control-group">
       <label class="control-label">Meeting:</label>
@@ -33,56 +33,34 @@
     </div>
     <label>Birthday:</label>
     <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>
-    <div id="data-values">
-      <label>Phone:</label>
-      <input type="text" id="phone" name="phone" />
-      <label>Address:</label>
-      <input type="text" id="address" name="address" />
-      <label></label>
-      <input type="text" id="address2" name="address2" />
-      <label>City:</label>
-      <input type="text" id="city" name="city" />
-      <label >State:</label>
-      <input type="text" class="span1" id="state" name="state" value="OH" />
-      <label >Zip:</label>
-      <input type="text" class="span2" id="zip" name="zip" class="digits"  />
-      <label>First Attendance:</label>
-      <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
-      <label>Salvation Date:</label>
-      <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
-      <label>Baptism Date:</label>
-      <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
-      <label>Allergy or Medical Information:</label>
-      <textarea rows="3" id="allergy_medical" name="allergy_medical"></textarea>
-      <label>Notes:</label>
-      <textarea rows="3" id="notes" name="notes"></textarea>
-    </div> 
+    <label>Phone:</label>
+    <input type="text" id="phone" name="phone" value="<%= @person[:phone] %>" />
+    <label>Address:</label>
+    <input type="text" id="address_line1" name="address_line1" value="<%= @person[:address_line1] %>" />
+    <label></label>
+    <input type="text" id="address_line2" name="address_line2" value="<%= @person[:address_line2] %>" />
+    <label>City:</label>
+    <input type="text" id="city" name="city" value="<%= @person[:city] %>" />
+    <label >State:</label>
+    <input type="text" class="span1" id="state" name="state" value="OH" value="<%= @person[:state] %>" />
+    <label >Zip:</label>
+    <input type="text" class="span2" id="zip" name="zip" class="digits" value="<%= @person[:zip] %>" />
+    <label>First Attendance:</label>
+    <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
+    <label>Salvation Date:</label>
+    <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
+    <label>Baptism Date:</label>
+    <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
+    <label>Allergy or Medical Information:</label>
+    <textarea rows="3" id="allergy_medical" name="allergy_medical"><%= @person[:allergy_medical] %></textarea>
+    <label>Notes:</label>
+    <textarea rows="3" id="notes" name="notes" ><%= @person[:notes] %></textarea>
     <div class="well">
       <button class="btn btn-primary" type="submit"><%= @action.capitalize %> Person</button>
     </div>
-    <input type="hidden" id="data" name="data" value='<%= @person[:data] %>' />
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
       $(function () {
-        var data = null;
-        var dataVal = $("#data").val();
-        var keys;
-        if (dataVal) {
-          data = JSON.parse(dataVal);
-          keys = _.keys(data);
-          for (var i = 0; i < keys.length; i++) {
-            $("#" + keys[i]).val(data[keys[i]]);
-          }
-        }
-        $("form").submit(function () {
-          var data = {};
-          $("#data-values :input").each(function () {
-            var item = {};
-            item[$(this).attr("name")] = $(this).val();
-            $.extend(data,item);
-          });
-          $("#data").val(JSON.stringify(data));
-        });
         $("form").validate({ 
           errorClass: "error",
           errorElement: "em",
@@ -95,13 +73,13 @@
             $(element).parents("div.clearfix").removeClass(errorClass);
           }
         });
-        $("#role-buttons button").click(function () {
-          $("#type").val($(this).attr("value"));
+        $("#role-buttons button").bind("load click", function () {
+          $("#person_type").val($(this).attr("value"));
         });
-        $("#gender-buttons button").click(function () {
+        $("#gender-buttons button").bind("load click", function () {
           $("#gender").val($(this).attr("value"));
         });
-        $("#meeting-buttons button").click(function () {
+        $("#meeting-buttons button").bind("load click", function () {
           $("#meeting").val($(this).attr("value"));
         });
       });

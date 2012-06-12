@@ -79,7 +79,9 @@
     <tr>
       <td><a href='<%= "/person/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
       <td><%= person[:gender].capitalize %></td>
-      <td class="last-static-dataitem"><%= person[:grade] or 'N/A' %></td>
+      <td><%= person[:grade] or 'N/A' %></td>
+      <td><%= person[:phone] or 'N/A' %></td>
+      <td><%= person[:address_line1] or 'N/A' %></td>
       <td>
         <%= @meetings[person[:meeting_id] - 1][:name] %> 
       </td> <!--HACK: -1 sucks here -->
@@ -96,13 +98,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-      var infoArray = [];
-      var tableRows = $("#people tbody tr");
-      <% @people.each do |person| %> infoArray.push(JSON.parse('<%= person[:data] %>')); <% end %>
-      $.template("basicData", "<td>{{=phone}}</td><td>{{=address}}</td>");
-      for (var i = 0; i < tableRows.length; i++) {
-          $(tableRows[i]).find(".last-static-dataitem").after($.render(infoArray[i], "basicData"));
-      }
       $("#gender button").click(function () {
           if ($(this).selected()) {
           }

@@ -20,12 +20,13 @@ class RenegadeData
       if (type == :student)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
-      json_data = JSON.parse(person[:data])
-      ['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
-        json_data[date] = Date.parse(json_data[date]) unless json_data[date].nil? or json_data[date].empty?
-      end
-      person.merge(json_data)
+      #json_data = JSON.parse(person[:data])
+      #['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
+      #  json_data[date] = Date.parse(json_data[date]) unless json_data[date].nil? or json_data[date].empty?
+      #end
+      #person.merge(json_data)
     end
+    people
   end
 
   def grade_from_birthday(birth_date)
@@ -84,41 +85,32 @@ class RenegadeData
     end
     return values
   end
-  def format_json_data(data)
-    values = JSON.parse(data)
-    format_phone!(values)
-    ['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
-      format_date!(values, date)
-    end
-    values.to_json
-  end
 
   def add_person(params)
-    local_params = {
-      :first_name => params[:first_name],
-      :last_name => params[:last_name],
-      :gender => params[:gender],
-      :birthdate => params[:birthdate],
-      :person_type => @types[params[:type].to_sym],
-      :meeting_id => 1,
-      :data => format_json_data(params[:data]),
-      :create_date => Date.today
-    }
+    local_params = params.merge({
+      'person_type' => @types[params['person_type'].to_sym],
+      'meeting_id' => params['meeting'].to_i,
+      'create_date' => Date.today,
+      'id' => nil
+    })
+    p local_params
+    local_params = remove_unneeded_person_keys(local_params)
     @DB[:people].insert(local_params)
   end
 
   def update_person(params)
-    local_params = {
-      :id => params[:id],
-      :first_name => params[:first_name],
-      :last_name => params[:last_name],
-      :gender => params[:gender],
-      :birthdate => params[:birthdate],
-      :person_type => @types[params[:type].to_sym],
-      :meeting_id => params[:meeting],
-      :data => format_json_data(params[:data])
-    }
+    local_params = params.merge({
+      'person_type' => @types[params['person_type'].to_sym],
+      'meeting_id' => params['meeting'].to_i,
+    })
+    local_params = remove_unneeded_person_keys(local_params)
     @DB[:people].filter(:id => params['id']).update(local_params)
+  end
+
+  def remove_unneeded_person_keys(params)
+    params.delete('type')
+    params.delete('meeting')
+    params
   end
 
   def delete_person(id)
@@ -127,7 +119,6 @@ class RenegadeData
 
   def get_person(id)
     val = update_people_for_display(@DB[:people].filter(:id => id)).first
-    p val
     return val
   end
 

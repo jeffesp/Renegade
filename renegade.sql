@@ -1,18 +1,29 @@
 BEGIN;
 
 CREATE TABLE people (
-  id              INTEGER NOT NULL,
-  first_name      TEXT NOT NULL,
-  last_name       TEXT NOT NULL,
-  gender          TEXT NOT NULL,
-  meeting_id      INTEGER NOT NULL,
-  birthdate       DATETIME NOT NULL,
-  person_type     INTEGER NOT NULL,
-  data            TEXT NULL,
-  photo_id        INTEGER NULL,
+  id                INTEGER NOT NULL,
+  first_name        TEXT NOT NULL,
+  last_name         TEXT NOT NULL,
+  gender            TEXT NOT NULL,
+  meeting_id        INTEGER NOT NULL,
+  birthdate         DATETIME NOT NULL,
+  person_type       INTEGER NOT NULL,
+  -- optional fields
+  photo_id          INTEGER NULL,
+  address_line1     TEXT NULL,
+  address_line2     TEXT NULL,
+  city              TEXT NULL,
+  state             TEXT NULL,
+  zip               INTEGER NULL,
+  phone             TEXT NULL,
+  salvation_date    DATETIME NULL,
+  baptism_date      DATETIME NULL,
+  first_attendance  DATETIME NULL,
+  allergy_medical   TEXT NULL,
+  notes             TEXT NULL,
   -- non input items
-  create_date     DATETIME NOT NULL,
-  delete_date     DATETIME NULL,
+  create_date       DATETIME NOT NULL,
+  delete_date       DATETIME NULL,
   PRIMARY KEY(id)
 );
 

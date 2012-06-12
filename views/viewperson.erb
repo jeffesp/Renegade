@@ -7,6 +7,36 @@
   <dd><%= { :student => "Student", :worker => "Worker", :student_worker => "Student Worker" }[ @person[:type] ] %> </dd>
   <dt>Meeting</dt>
   <dd><%= @meetings[@person[:meeting_id]-1][:name] %></dd> <!-- HACK: -1 sucks! -->
+  <dt>Phone</dt>
+  <dd><%= @person[:phone] %></dt>
+  <dt>Address</dt>
+  <dd>
+  <div><%= @person[:address_line1]%></div>
+  <div><%= @person[:address_line2]%></div>
+  <div><%= @person[:city]%>, <%= @person[:state]%> <%= @person[:zip]%></div>
+  </dd>
+  <% if not @person[:grade].nil? %>
+  <dt>Current Grade</dt>
+  <dd><%= @person[:grade]%></dd>
+  <% end %>
+  <% if not @person[:birthdate].nil? %>
+  <dt>Birthday</dt>
+  <dd> <%= partial(:viewdate, { :current_value => @person[:birthdate] }) %></dd>
+  <%end%>
+  <dt>Allergy/Medical Condition</dt>
+  <dd></dd>
+  <dt>Notes</dt>
+  <dd></dd>
+  <dt>First Attendance</dt>
+  <dd> <%= partial(:viewdate, { :current_value => @person[:first_attendance] }) %></dd>
+  <% if not @person[:salvation_date].nil? %>
+  <dt>Salvation Date</dt>
+  <dd> <%= partial(:viewdate, { :current_value => @person[:salvation_date] }) %></dd>
+  <%end%>
+  <% if not @person[:baptism_date].nil? %>
+  <dt>Baptism Date</dt>
+  <dd> <%= partial(:viewdate, { :current_value => @person[:baptism_date] }) %></dd>
+  <% end %>
 </dl>
 <div class="clearfix well">
   <a class="btn btn-primary" href='<%= "/edit/person/#{@person[:id]}"%>'>Edit</a> 
@@ -15,44 +45,4 @@
 <div style="display:none">
 Record Created: <%= @person[:create_date] %>
 </div>
-<script id="dataItem" type="text/x-jquery-tmpl">
-  <dt>Phone</dt>
-  <dd>{{= phone}}</dt>
-  <dt>Address</dt>
-  <dd>
-  <div>{{= address}}</div>
-  <div>{{= address2}}</div>
-  <div>{{= city}}, {{= state}} {{= zip}}</div>
-  </dd>
-  {{#if grade}}
-  <dt>Current Grade</dt>
-  <dd>{{= grade}}</dd>
-  {{/if}}
-  {{#if birthday}}
-  <dt>Birthday</dt>
-  <dd>{{= birthday}}</dd>
-  {{/if}}
-  <dt>Allergy/Medical Condition</dt>
-  <dd>{{itemOrNone allergy_medical}}</dd>
-  <dt>Notes</dt>
-  <dd>{{itemOrNone notes}}</dd>
-  <dt>First Attendance</dt>
-  <dd>{{= first_attendance}}</dd>
-  {{#if salvation_date }}
-  <dt>Salvation Date</dt>
-  <dd>{{= salvation_date}}</dd>
-  {{/if}}
-  {{#if baptism_date }}
-  <dt>Baptism Date</dt>
-  <dd>{{= baptism_date}}</dd>
-  {{/if}}
-</script>
 
-<script type="text/javascript">
-  $(function () {
-      var data = JSON.parse('<%= @person[:data] %>');
-      $("#person").append(
-        $("#dataItem").render(data)
-      );
-  });
-</script>
