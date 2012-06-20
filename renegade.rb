@@ -127,12 +127,12 @@ class Renegade < Sinatra::Base
     if (params[:search] != nil)
       @people = data.find_people(params[:search])
     elsif (params.count > 0) # if not searching, but has params
-      @people =[]
+      @people = [] #data.get_people
     else
       @people = data.get_people
     end
     @meetings = data.get_locations or []
-    p @people
+    @grades = data.get_grades or []
     erb :people
   end
 

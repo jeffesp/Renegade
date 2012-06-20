@@ -9,10 +9,11 @@ class RenegadeData
   def initialize
     @DB = Sequel.connect('sqlite://data/renegade.db')
     @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
+    @grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
   end
 
   def update_people_for_display(people)
-    people = people.filter(:delete_date => nil)
+    people = people.filter(:delete_date => nil).all
     inverted_types = @types.invert
     people.map do |person|
       type = inverted_types[person[:person_type]]
@@ -30,15 +31,14 @@ class RenegadeData
       return "N/A"
     end
     seconds_per_year = 60 * 60 * 24 * 365.25
-    grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
     age = ((Time.new - birth_date) / seconds_per_year).to_i
     # index calculation
     if (age <= 5)
-      grades[0]
+      @grades[0]
     elsif (age > 5 or age < 19)
-      grades[age-5]
+      @grades[age-5]
     else
-      grades[15]
+      @grades[15]
     end
   end
 
@@ -88,7 +88,6 @@ class RenegadeData
       'create_date' => Date.today,
       'id' => nil
     })
-    p local_params
     local_params = remove_unneeded_person_keys(local_params)
     @DB[:people].insert(local_params)
   end
@@ -119,6 +118,10 @@ class RenegadeData
 
   def get_locations
     @DB[:locations].all
+  end
+
+  def get_grades
+    @grades
   end
 
   # site user stuff

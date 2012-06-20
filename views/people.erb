@@ -1,52 +1,47 @@
-<form class="form-horizontal well" action="/people" method="GET">
+<form class="well" action="/people" method="GET">
   <h2>Filter List </h2>
   <div class="control-group" >
     <label class="control-label">Gender</label>
     <div class="controls">
-      <div id="gender" class="btn-group" data-toggle="buttons-checkbox">
-        <button type="button" name="male" class="btn">Male</button>
-        <button type="button" name="female" class="btn">Female</button>
-      </div>
+      <select id="gender" name="gender">
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+          <option value="">Either</option>
+      </select>
     </div>
-    <input type="hidden" id="gender" name="gender" />
   </div>
   <div class="control-group">
     <label class="control-label">Role</label>
     <div class="controls">
-      <div id="role" class="btn-group" data-toggle="buttons-checkbox">
-        <a href="#" class="btn">Student</a>
-        <a href="#" class="btn">Worker</a>
-        <a href="#" class="btn">Student Worker</a>
-      </div>
+      <select id="role" name="role">
+          <option value="">Any</option>
+          <option value="">Student</option>
+          <option value="">Worker</option>
+          <option value="">Student Worker</option>
+      </select>
     </div>
-    <input type="hidden" id="role" name="role" />
   </div>
   <div class="control-group">
     <label class="control-label">Meeting</label>
     <div class="controls">
-      <%= partial(:meetings, { :meetings => @meetings, :meeting_id => nil, :selection_type => "checkbox" }) %>
+      <select id="meeting" name="meeting">
+        <option value="">Any</option>
+        <% @meetings.each do |m| %>
+          <option value="<%= m[:id] %>"><%= m[:name] %></option>
+        <% end %>
+      </select>
     </div>
-    <input type="hidden" id="meeting" name="meeting" />
   </div>
   <div class="control-group">
     <label class="control-label">Grade</label>
     <div class="controls">
+      <select id="grade" name="grade">
+        <option value="">Any</option>
+        <% @grades.each do |g| %>
+          <option value="<%= g %>"><%= g %></option>
+        <% end %>
+      </select>
       <div id="grade" class="btn-group" data-toggle="buttons-checkbox">
-        <a href="#" class="btn">PreK</a>
-        <a href="#" class="btn">K</a>
-        <a href="#" class="btn">1</a>
-        <a href="#" class="btn">2</a>
-        <a href="#" class="btn">3</a>
-        <a href="#" class="btn">4</a>
-        <a href="#" class="btn">5</a>
-        <a href="#" class="btn">6</a>
-        <a href="#" class="btn">7</a>
-        <a href="#" class="btn">8</a>
-        <a href="#" class="btn">9</a>
-        <a href="#" class="btn">10</a>
-        <a href="#" class="btn">11</a>
-        <a href="#" class="btn">12</a>
-        <a href="#" class="btn">PostHS</a>
       </div>
     </div>
     <input type="hidden" id="grade" name="grade" />

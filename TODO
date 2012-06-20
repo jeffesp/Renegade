@@ -1,15 +1,17 @@
 NOTES
 
-Dates pickers do not seem to get their value when loaded?
-
 Implement the filtering on the main page:
   - first make so the values are submitted
   - then do the range thing on the grade
   - then do the display of the current filter "Female Students in K-5"
 
-Change style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
+Redo header
 
-Deploy to amazon.
+Error message on bad login
+
+Make people the default page.
+
+Change style mobile is viable. Add the stuff viewport, icon, etc. <meta> head elements.
 
 Add google map display in view page.
 
@@ -21,7 +23,6 @@ the most used even if it isn't the residence or home phone number.
 
 Add Script/CSS compression for production environment.
 
-Determine what to do about Templates - common file and all compiled?
 
 Add Meetings/classes/rosters.
 
