@@ -7,7 +7,7 @@ require 'json'
 class RenegadeData
 
   def initialize
-    @DB = Sequel.connect('sqlite://renegade.db')
+    @DB = Sequel.connect('sqlite://data/renegade.db')
     @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
   end
 
@@ -20,11 +20,6 @@ class RenegadeData
       if (type == :student)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
-      #json_data = JSON.parse(person[:data])
-      #['first_attendance', 'salvation_date', 'baptism_date'].each do |date|
-      #  json_data[date] = Date.parse(json_data[date]) unless json_data[date].nil? or json_data[date].empty?
-      #end
-      #person.merge(json_data)
     end
     people
   end

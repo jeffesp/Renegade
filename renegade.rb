@@ -64,7 +64,7 @@ class Renegade < Sinatra::Base
 
   before do
     # check authenticaion cookie exists if not logging in
-    if !request.cookies["auth"] and !/^\/login(\?returnurl=[\w\/]+)?$/i.match(request.path)
+    if !request.cookies["auth"] and !/^\/create|\/login(\?returnurl=[\w\/]+)?$/i.match(request.path)
       redirect to("/login?returnurl=#{request.path}"), 302
     end
     process_date_keys(params)
