@@ -6,6 +6,7 @@ require 'renegade-data'
 
 class Renegade < Sinatra::Base
 
+  @loggedIn = false
   helpers do
     def partial (template, locals = {})
         erb(template, :layout => false, :locals => locals)
@@ -66,16 +67,17 @@ class Renegade < Sinatra::Base
     # check authenticaion cookie exists if not logging in
     if !request.cookies["auth"] and !/^\/create|\/login(\?returnurl=[\w\/]+)?$/i.match(request.path)
       redirect to("/login?returnurl=#{request.path}"), 302
+      return
     end
     process_date_keys(params)
+    @loggedIn = !request.cookies["auth"].nil?
   end
 
   after do
   end
 
-
   get '/' do
-      erb :home
+    redirect '/people', 302
   end
 
   get '/login' do
@@ -94,7 +96,7 @@ class Renegade < Sinatra::Base
     if (params[:returnurl] and is_local_url(params[:returnurl]))
       redirect_to = params[:returnurl]
     else
-      redirect_to = '/'
+      redirect_to = '/people'
     end
     redirect redirect_to, 302
   end

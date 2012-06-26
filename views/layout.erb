@@ -5,6 +5,7 @@
   <meta charset=utf-8 />
   <link rel="stylesheet" href="/css/bootstrap.css" />
   <link rel="stylesheet" href="/css/renegade.css" />
+  <link rel="stylesheet" href="/css/bootstrap-responsive.css" />
   <script type="text/javascript">
     window.q = [];
     window.$=function(f){
@@ -16,14 +17,13 @@
 <body>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container">
+      <div class="container-fluid">
         <a class="brand" href="/">Renegade!</a>
-        <ul class="nav">
-          <li><a href="/people">People</a></li>
-        </ul>
+        <% if @loggedIn %>
         <form class="navbar-search pull-left" action="/people" method="GET">
           <input type="text" class="search-query" id="search" name="search" placeholder="Search" value="<%= params[:search] %>" />
         </form>
+        <% end %>
       </div>
     </div>
   </div>
@@ -35,6 +35,9 @@
     </div>
 
     <footer>
+    <% if @loggedIn %>
+      <a href="/logout">Logout</a>
+    <% end %>
     <p>&copy; <%= Date.today.year %></p>
     </footer>
   </div>
