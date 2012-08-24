@@ -31,8 +31,14 @@
         <%= partial(:meetings, { :meetings => @meetings, :meeting_id => (@person[:meeting_id] or 1), :selection_type => "radio" }) %>
       </div>
     </div>
-    <label>Birthday:</label>
-    <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>
+    <div class="control-group">
+      <label>Birthday:</label>
+      <div class="controls">
+        <div class="input-append">
+          <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>
+        </div>
+      </div>
+    </div>
     <label>Phone:</label>
     <input type="text" id="phone" name="phone" value="<%= @person[:phone] %>" />
     <label>Address:</label>
@@ -45,12 +51,30 @@
     <input type="text" class="span1" id="state" name="state" value="OH" value="<%= @person[:state] %>" />
     <label >Zip:</label>
     <input type="text" class="span2" id="zip" name="zip" class="digits" value="<%= @person[:zip] %>" />
-    <label>First Attendance:</label>
-    <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
-    <label>Salvation Date:</label>
-    <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
-    <label>Baptism Date:</label>
-    <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
+    <div class="control-group">
+      <label>First Attendance:</label>
+      <div class="controls">
+        <div class="input-append">
+          <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label>Salvation Date:</label>
+      <div class="controls">
+        <div class="input-append">
+          <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label>Baptism Date:</label>
+      <div class="controls">
+        <div class="input-append">
+          <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
+        </div>
+      </div>
+    </div>
     <label>Allergy or Medical Information:</label>
     <textarea rows="3" id="allergy_medical" name="allergy_medical"><%= @person[:allergy_medical] %></textarea>
     <label>Notes:</label>

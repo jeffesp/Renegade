@@ -46,7 +46,21 @@ class RenegadeData
     if (filter == nil)
       update_people_for_display(@DB[:people])
     else
-      nil
+      # because the grade is calculated in this file, first we filter by other critera, get that
+      # dataset and then filter the rest here. not the best efficiency, but works for this.
+
+      set = @DB[:people]
+      if filter.has_key?('gender')
+        set = set.where('gender = ?', filter['gender'])
+      end
+      if filter.has_key?('role')
+        set = set.where('person_type = ?', filter['role'])
+      end
+      if filter.has_key?('meeting')
+        set = set.where('meeting_id = ?', filter['meeting'])
+      end
+      p set.sql
+      update_people_for_display(set)
     end
   end
 

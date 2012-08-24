@@ -129,7 +129,7 @@ class Renegade < Sinatra::Base
     if (params[:search] != nil)
       @people = data.find_people(params[:search])
     elsif (params.count > 0) # if not searching, but has params
-      @people = [] #data.get_people
+      @people = data.get_people(params.delete_if { |key, value| value.empty? })
     else
       @people = data.get_people
     end

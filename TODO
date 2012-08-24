@@ -1,13 +1,11 @@
 NOTES
 
 Implement the filtering on the main page:
-  - first make so the values are submitted
-  - then do the range thing on the grade
-  - then do the display of the current filter "Female Students in K-5"
-
-Add icon for home screens.
+  - paging
 
 Add google map display in view page.
+
+Add icon for home screens.
 
 It would be nice to have some sort of route or url creation code rather than manually throwing together strings.
 

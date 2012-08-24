@@ -1,0 +1,6 @@
+<% items = if values.instance_of? Hash then values.to_a.sort else values.collect { |v| [v, v]}.to_a end %>
+<select name="<%= name %>" id="<%= name %>" >
+  <% items.each do |k, v| %>
+    <option value="<%= if k == "Any" then "" else k end %>" <%= selected='selected' if !current_value.nil? and current_value == k %>><%= v %></option>
+  <% end %>
+</select>
