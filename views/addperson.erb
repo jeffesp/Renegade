@@ -1,5 +1,5 @@
 <h2><%= @action.capitalize %> Person</h2>
-<form action="/<%= @action %>/person" method="POST">
+<form action="/<%= @action %>/person" method="POST" id="main-form">
     <label>First Name:</label>
     <input type="text" id="first_name" name="first_name" value="<%= @person[:first_name] %>" />
     <label>Last Name:</label>
@@ -76,17 +76,17 @@
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
       onInit(function () {
-          $("form").validate({ 
-            debug: true,
+          $("#main-form").validate({ 
             rules: { 
               first_name: { minlength: 2, required: true },
               last_name: { minlength: 2, required: true },
-              zip: { minlength: 5, required: true, digits: true }
             },
             messages: {
               first_name: { minlength: "Please enter more than 2 characters", required: "First name is required" },
               last_name: { minlength: "Please enter more than 2 characters", required: "Last name is required" },
-              zip: { minlength: "A zip code must be at least 5 digits", required: "Zip code is required" },
+            },
+            group: {
+              birthday: "birthdate-date-m birthdate-date-d birthday-date-y"
             },
             errorClass: "error",
             highlight: function(element, errorClass, validClass) {
