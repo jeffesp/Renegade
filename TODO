@@ -1,8 +1,5 @@
 NOTES
 
-Implement the filtering on the main page:
-  - paging
-
 Add google map display in view page.
 
 Add icon for home screens.
@@ -16,8 +13,3 @@ the most used even if it isn't the residence or home phone number.
 Add Script/CSS compression for production environment.
 
 Add Meetings/classes/rosters.
-
-QUESTIONS
-
-Validation on student entry form:
-2. None on phone? Starts with the standard but allows for anything at end?

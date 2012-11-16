@@ -12,16 +12,15 @@ class RenegadeData
     @grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
   end
 
-  def update_people_for_display(people_query, count_query = nil)
+  def update_people_for_display(people_query)
     people = people_query.filter(:delete_date => nil).all
-    count = count_query.count
     people.map do |person|
       person[:type] = @types[person[:person_type]]
       if (person[:person_type] < 3)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
     end
-    [people, count]
+    people
   end
 
   def grade_from_birthday(birth_date)
@@ -69,7 +68,7 @@ class RenegadeData
       end
 
     end
-    update_people_for_display(set, count_set)
+    [update_people_for_display(set), count_set.count]
   end
 
   def find_people(name)
