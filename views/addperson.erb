@@ -1,9 +1,13 @@
 <h2><%= @action.capitalize %> Person</h2>
 <form action="/<%= @action %>/person" method="POST" id="main-form">
-    <label>First Name:</label>
-    <input type="text" id="first_name" name="first_name" value="<%= @person[:first_name] %>" />
-    <label>Last Name:</label>
-    <input type="text" id="last_name" name="last_name" value="<%= @person[:last_name] %>" />
+    <div class="control-group">
+      <label>First Name:</label>
+      <input type="text" id="first_name" name="first_name" value="<%= @person[:first_name] %>" />
+    </div>
+    <div class="control-group">
+      <label>Last Name:</label>
+      <input type="text" id="last_name" name="last_name" value="<%= @person[:last_name] %>" />
+    </div>
     <div class="control-group">
       <label class="control-label">Gender</label>
       <div class="controls">
@@ -25,19 +29,27 @@
     <div class="control-group">
       <label>Birthday:</label>
       <div class="controls">
-        <div class="input-append">
+        <div class="form-inline">
           <%= partial(:date, { :current_value => @person[:birthdate], :name => "birthdate" }) %>
         </div>
       </div>
     </div>
-    <label>Phone:</label>
-    <input type="text" id="phone" name="phone" value="<%= @person[:phone] %>" />
-    <label>Address:</label>
-    <input type="text" id="address_line1" name="address_line1" value="<%= @person[:address_line1] %>" />
-    <label></label>
-    <input type="text" id="address_line2" name="address_line2" value="<%= @person[:address_line2] %>" />
-    <label>City:</label>
-    <input type="text" id="city" name="city" value="<%= @person[:city] %>" />
+    <div class="control-group">
+      <label>Phone:</label>
+      <input type="text" id="phone" name="phone" value="<%= @person[:phone] %>" />
+    </div>
+    <div class="control-group">
+      <label>Address:</label>
+      <input type="text" id="address_line1" name="address_line1" value="<%= @person[:address_line1] %>" />
+    </div>
+    <div class="control-group">
+      <label></label>
+      <input type="text" id="address_line2" name="address_line2" value="<%= @person[:address_line2] %>" />
+    </div>
+    <div class="control-group">
+      <label>City:</label>
+      <input type="text" id="city" name="city" value="<%= @person[:city] %>" />
+    </div>
     <label >State:</label>
     <input type="text" class="span1" id="state" name="state" value="OH" value="<%= @person[:state] %>" />
     <label >Zip:</label>
@@ -45,7 +57,7 @@
     <div class="control-group">
       <label>First Attendance:</label>
       <div class="controls">
-        <div class="input-append">
+        <div class="form-inline">
           <%= partial(:date, { :current_value => @person[:first_attendance], :name => "first_attendance" }) %>
         </div>
       </div>
@@ -53,7 +65,7 @@
     <div class="control-group">
       <label>Salvation Date:</label>
       <div class="controls">
-        <div class="input-append">
+        <div class="form-inline">
           <%= partial(:date, { :current_value => @person[:salvation_date], :name => "salvation_date" }) %>
         </div>
       </div>
@@ -61,7 +73,7 @@
     <div class="control-group">
       <label>Baptism Date:</label>
       <div class="controls">
-        <div class="input-append">
+        <div class="form-linline">
           <%= partial(:date, { :current_value => @person[:baptism_date], :name => "baptism_date" }) %>
         </div>
       </div>
@@ -80,24 +92,37 @@
             rules: { 
               first_name: { minlength: 2, required: true },
               last_name: { minlength: 2, required: true },
+              "birthdate-date-m" : "required",
+              "birthdate-date-d" : "required",
+              "birthdate-date-y" : "required"
             },
             messages: {
               first_name: { minlength: "Please enter more than 2 characters", required: "First name is required" },
               last_name: { minlength: "Please enter more than 2 characters", required: "Last name is required" },
+              "birthdate-date-m" : "",
+              "birthdate-date-d" : "",
+              "birthdate-date-y" : "Birthday is requried"
             },
-            group: {
+            groups: {
               birthday: "birthdate-date-m birthdate-date-d birthday-date-y"
             },
-            errorClass: "error",
+            errorClass: "help-inline",
+            errorElement: "span",
             highlight: function(element, errorClass, validClass) {
-              $(element).addClass(errorClass).removeClass(validClass);
-              $(element).parents("div.clearfix").addClass(errorClass);
+              $(element).closest('.control-group').addClass('error');
             },
             unhighlight: function(element, errorClass, validClass) {
-              $(element).removeClass(errorClass).addClass(validClass);
-              $(element).parents("div.clearfix").removeClass(errorClass);
+              $(element).closest('.control-group').removeClass('error');
+            },
+            errorPlacement: function(label, element) {
+              if (/^birthdate/.test(element[0].name)) {
+                label.insertAfter("#birthdate-date-y");
+              } else {
+                label.insertAfter(element);
+
+              }
             }
-        });
+          });
       });
     </script>
 </form>
