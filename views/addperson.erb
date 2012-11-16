@@ -1,34 +1,25 @@
 <h2><%= @action.capitalize %> Person</h2>
 <form action="/<%= @action %>/person" method="POST">
     <label>First Name:</label>
-    <input type="text" id="first_name" name="first_name" class="required" value="<%= @person[:first_name] %>" />
+    <input type="text" id="first_name" name="first_name" value="<%= @person[:first_name] %>" />
     <label>Last Name:</label>
-    <input type="text" id="last_name" name="last_name" class="required" value="<%= @person[:last_name] %>" />
+    <input type="text" id="last_name" name="last_name" value="<%= @person[:last_name] %>" />
     <div class="control-group">
       <label class="control-label">Gender</label>
       <div class="controls">
-        <div id="gender-buttons" class="btn-group" data-toggle="buttons-radio">
-          <button type="button" name="gender" value="male" class="btn <%= (@person[:gender] == 'male' or @person[:gender].nil?) ? 'active' : '' %>">Male</button>
-          <button type="button" name="gender" value="female" class="btn <%= (@person[:gender] == 'female') ? 'active' : '' %>">Female</button>
-        </div>
+        <%= partial(:selectList, {:values => {"female" => "Female", "male" => "Male"}, :current_value => @person[:gender], :name => "gender" }) %>
       </div>
-      <input type="hidden" id="gender" name="gender" value="<%= @person[:gender] or 'male' %>" />
     </div>
     <div class="control-group">
       <label class="control-label">Role:</label>
       <div class="controls">
-        <div id="role-buttons" class="btn-group" data-toggle="buttons-radio">
-          <button type="button" name="type" value="student" class="btn <%= (@person[:person_type] == :student or @person[:person_type].nil?) ? 'active'  : '' %>">Student</button>
-          <button type="button" name="type" value="worker" class="btn <%= @person[:person_type] == :worker ? 'active' : '' %>">Worker</button>
-          <button type="button" name="type" value="student_worker" class="btn <%= @person[:person_type] == :student_worker ? 'active' : '' %>">Student Worker</button>
-        </div>
+        <%= partial(:selectList, {:values => {"1" => "Student", "2" => "Worker", "3" => "Student Worker" }, :current_value => @person[:person_type], :name => "role" }) %>
       </div>
-      <input type="hidden" id="person_type" name="person_type" value="<%= @person[:person_type] or 'student' %>" />
     </div>
     <div class="control-group">
       <label class="control-label">Meeting:</label>
       <div class="controls">
-        <%= partial(:meetings, { :meetings => @meetings, :meeting_id => (@person[:meeting_id] or 1), :selection_type => "radio" }) %>
+      <%= partial(:selectList, {:values => Hash[@meetings.collect {|m| [ m[:id].to_s, m[:name] ] }], :current_value => params[:meeting], :name => "meeting" }) %>
       </div>
     </div>
     <div class="control-group">
@@ -50,7 +41,7 @@
     <label >State:</label>
     <input type="text" class="span1" id="state" name="state" value="OH" value="<%= @person[:state] %>" />
     <label >Zip:</label>
-    <input type="text" class="span2" id="zip" name="zip" class="digits" value="<%= @person[:zip] %>" />
+    <input type="text" id="zip" name="zip" class="span2" value="<%= @person[:zip] %>" />
     <div class="control-group">
       <label>First Attendance:</label>
       <div class="controls">
@@ -80,31 +71,32 @@
     <label>Notes:</label>
     <textarea rows="3" id="notes" name="notes" ><%= @person[:notes] %></textarea>
     <div class="well">
-      <button class="btn btn-primary" type="submit"><%= @action.capitalize %> Person</button>
+      <input class="btn btn-primary" type="submit" value="<%= @action.capitalize %> Person" />
     </div>
     <input type="hidden" id="id" name="id" value='<%= @person[:id] %>' />
     <script type="text/javascript">
-      $(function () {
-        $("form").validate({ 
-          errorClass: "error",
-          errorElement: "em",
-          highlight: function(element, errorClass, validClass) {
-            $(element).addClass(errorClass).removeClass(validClass);
-            $(element).parents("div.clearfix").addClass(errorClass);
-          },
-          unhighlight: function(element, errorClass, validClass) {
-            $(element).removeClass(errorClass).addClass(validClass);
-            $(element).parents("div.clearfix").removeClass(errorClass);
-          }
-        });
-        $("#role-buttons button").bind("load click", function () {
-          $("#person_type").val($(this).attr("value"));
-        });
-        $("#gender-buttons button").bind("load click", function () {
-          $("#gender").val($(this).attr("value"));
-        });
-        $("#meeting-buttons button").bind("load click", function () {
-          $("#meeting").val($(this).attr("value"));
+      onInit(function () {
+          $("form").validate({ 
+            debug: true,
+            rules: { 
+              first_name: { minlength: 2, required: true },
+              last_name: { minlength: 2, required: true },
+              zip: { minlength: 5, required: true, digits: true }
+            },
+            messages: {
+              first_name: { minlength: "Please enter more than 2 characters", required: "First name is required" },
+              last_name: { minlength: "Please enter more than 2 characters", required: "Last name is required" },
+              zip: { minlength: "A zip code must be at least 5 digits", required: "Zip code is required" },
+            },
+            errorClass: "error",
+            highlight: function(element, errorClass, validClass) {
+              $(element).addClass(errorClass).removeClass(validClass);
+              $(element).parents("div.clearfix").addClass(errorClass);
+            },
+            unhighlight: function(element, errorClass, validClass) {
+              $(element).removeClass(errorClass).addClass(validClass);
+              $(element).parents("div.clearfix").removeClass(errorClass);
+            }
         });
       });
     </script>

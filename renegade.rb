@@ -21,6 +21,13 @@ class Renegade < Sinatra::Base
       end
       val
     end
+    def page_number(current)
+      request.params['page'] = current
+      if request.params.is_a? Hash
+        optstring = '?' + request.params.map { |k,v| "#{k}=#{URI.escape(v.to_s, /[^#{URI::PATTERN::UNRESERVED}]/)}" }.join('&')
+      end
+      optstring
+    end
   end
 
   def select_date_keys(params)
@@ -71,6 +78,10 @@ class Renegade < Sinatra::Base
     end
     process_date_keys(params)
     @loggedIn = !request.cookies["auth"].nil?
+    @data = RenegadeData.new
+    @meetings = @data.get_locations or []
+    @grades = @data.get_grades or []
+    @types = @data.get_types or []
   end
 
   after do
@@ -87,8 +98,7 @@ class Renegade < Sinatra::Base
 
   post '/login' do
     # if email is registered and password is not empty, check user
-    data = RenegadeData.new
-    user = data.get_user(params[:email])
+    user = @data.get_user(params[:email])
     if user == nil or !(user[:active]) or (BCrypt::Password.new(user[:password_hash]) != params[:password])
       redirect to("/login?showerror=true"), 302
     end
@@ -107,7 +117,6 @@ class Renegade < Sinatra::Base
   end
 
   post '/create' do
-    data = RenegadeData.new
     if (params[:password] == params[:confirm])
       data.add_user(params[:email], BCrypt::Password.create(params[:password]))
       redirect "/", 302
@@ -124,55 +133,46 @@ class Renegade < Sinatra::Base
     # params might be empty -> just show list
     # params might have data display params -> get people with filter
     # params might have search text -> do a search
-    data = RenegadeData.new
     @people = []
     if (params[:search] != nil)
-      @people = data.find_people(params[:search])
+      @people = @data.find_people(params[:search])
     elsif (params.count > 0) # if not searching, but has params
-      @people = data.get_people(params.delete_if { |key, value| value.empty? })
+      @people = @data.get_people(params.delete_if { |key, value| value.empty? })
     else
-      @people = data.get_people
+      @people = @data.get_people
     end
-    @meetings = data.get_locations or []
-    @grades = data.get_grades or []
     erb :people
   end
 
   get '/add/person' do
-    data = RenegadeData.new
     @person = { :first_attendance => Date.today }
-    @meetings = data.get_locations or []
     @action = 'add'
     erb :addperson
   end
 
   get '/person/:id' do
-    data = RenegadeData.new
-    @meetings = data.get_locations or []
-    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
+    @person = @data.get_person(params[:id]) or redirect to("/notfound"), 302
     erb :viewperson
   end
 
   post '/add/person' do
-    personid = RenegadeData.new.add_person(params)
+    personid = @data.add_person(params)
     redirect to("/person/#{personid}"), 302
   end
 
   get '/edit/person/:id' do
-    data = RenegadeData.new
-    @person = data.get_person(params[:id]) or redirect to("/notfound"), 302
-    @meetings = data.get_locations or []
+    @person = @data.get_person(params[:id]) or redirect to("/notfound"), 302
     @action = 'edit'
     erb :addperson
   end
 
   post '/edit/person' do
-    personid = RenegadeData.new.update_person(params)
+    personid = @data.update_person(params)
     redirect to("/person/#{params[:id]}"), 302
   end
 
   get '/delete/person/:id' do
-    RenegadeData.new.delete_person(params[:id])
+    @data.delete_person(params[:id])
     redirect to("/people"), 302
   end
 

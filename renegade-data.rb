@@ -8,21 +8,20 @@ class RenegadeData
 
   def initialize
     @DB = Sequel.connect('sqlite://data/renegade.db')
-    @types = { :student => 1, :worker => 2, :parent => 3, :contact => 4, :student_worker => 5 }
+    @types = [ "Student", "Worker", "Student Worker" ]
     @grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
   end
 
-  def update_people_for_display(people)
-    people = people.filter(:delete_date => nil).all
-    inverted_types = @types.invert
+  def update_people_for_display(people_query, count_query = nil)
+    people = people_query.filter(:delete_date => nil).all
+    count = count_query.count
     people.map do |person|
-      type = inverted_types[person[:person_type]]
-      person[:type] = type
-      if (type == :student)
+      person[:type] = @types[person[:person_type]]
+      if (person[:person_type] < 3)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
     end
-    people
+    [people, count]
   end
 
   def grade_from_birthday(birth_date)
@@ -44,7 +43,8 @@ class RenegadeData
 
   def get_people(filter=nil)
     if (filter == nil)
-      update_people_for_display(@DB[:people])
+      set = @DB[:people].limit(5, 0)
+      count_set = @DB[:people]
     else
       # because the grade is calculated in this file, first we filter by other critera, get that
       # dataset and then filter the rest here. not the best efficiency, but works for this.
@@ -54,14 +54,22 @@ class RenegadeData
         set = set.where('gender = ?', filter['gender'])
       end
       if filter.has_key?('role')
-        set = set.where('person_type = ?', filter['role'])
+        set = set.where('person_type = ?', @types.index(filter['role']) + 1)
       end
       if filter.has_key?('meeting')
         set = set.where('meeting_id = ?', filter['meeting'])
       end
-      p set.sql
-      update_people_for_display(set)
+
+      if filter.has_key?('page')
+        count_set = set
+        set = set.limit(5, filter['page'].to_i * 5)
+      else
+        count_set = set
+        set = set.limit(5, 0)
+      end
+
     end
+    update_people_for_display(set, count_set)
   end
 
   def find_people(name)
@@ -97,7 +105,7 @@ class RenegadeData
 
   def add_person(params)
     local_params = params.merge({
-      'person_type' => @types[params['person_type'].to_sym],
+      'person_type' => params['role'],
       'meeting_id' => params['meeting'].to_i,
       'create_date' => Date.today,
       'id' => nil
@@ -108,7 +116,7 @@ class RenegadeData
 
   def update_person(params)
     local_params = params.merge({
-      'person_type' => @types[params['person_type'].to_sym],
+      'person_type' => params['role'],
       'meeting_id' => params['meeting'].to_i,
     })
     local_params = remove_unneeded_person_keys(local_params)
@@ -116,7 +124,7 @@ class RenegadeData
   end
 
   def remove_unneeded_person_keys(params)
-    params.delete('type')
+    params.delete('role')
     params.delete('meeting')
     params
   end
@@ -136,6 +144,10 @@ class RenegadeData
 
   def get_grades
     @grades
+  end
+
+  def get_types
+    @types
   end
 
   # site user stuff

@@ -15,9 +15,9 @@
     </tr>
   </thead>
   <tbody>
-  <% @people.each do |person| %>
+  <% @people[0].each do |person| %>
     <tr>
-      <td><a href='<%= "/person/#{person[:id]}"%>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
+      <td><a href='<%= url("/person/#{person[:id]}") %>'><%= person[:first_name] %> <%= person[:last_name] %></a></td>
       <td><%= person[:gender].capitalize %></td>
       <td><%= person[:grade] or 'N/A' %></td>
       <td><%= person[:phone] or 'N/A' %></td>
@@ -33,6 +33,25 @@
 </tbody>
 </table>
 
+<%
+  pages = @people[1] / 5
+  total_pages = pages
+  if pages >= 5 then
+    pages = 5
+  end
+
+%>
+
+  <div class="pagination">
+    <ul>
+      <% for i in 0..pages %>
+      <li><a href="<%= url("/people" + page_number(i)) %>"><%= i + 1 %></a></li>
+      <% end %>
+      <% if pages < total_pages then %>
+      <li><a href="<%= url("/people" + page_number(total_pages)) %>"><%= total_pages %></a></li>
+      <% end %>
+    </ul>
+  </div>
 <div class="row well">
   <a class="btn" href='<%= "/add/person" %>'>Add New</a>
   <a class="btn" id="filter-list" href="#">Filter List</a>
@@ -48,7 +67,7 @@
   <div class="control-group">
     <label class="control-label">Role</label>
     <div class="controls">
-      <%= partial(:selectList, {:values => {"" => "Any", "1" => "Student", "2" => "Worker", "3" => "Student Worker" }, :current_value => params[:role], :name => "role" }) %>
+      <%= partial(:selectList, {:values => @types.insert(0, "Any"), :current_value => params[:role], :name => "role" }) %>
     </div>
   </div>
   <div class="control-group">
