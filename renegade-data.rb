@@ -8,15 +8,15 @@ class RenegadeData
 
   def initialize
     @DB = Sequel.connect('sqlite://data/renegade.db')
-    @types = [ "Student", "Worker", "Student Worker" ]
     @grades = [ "PreK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "PostHS"]
+    @types = @DB[:person_type].all()
   end
 
   def update_people_for_display(people_query)
     people = people_query.filter(:delete_date => nil).all
     people.map do |person|
-      person[:type] = @types[person[:person_type]]
-      if (person[:person_type] < 3)
+      person[:type] = @types.select { |pt| pt[:id] == person[:person_type_id]}.first()[:description]
+      if (person[:person_type_id] < 3)
         person[:grade] = grade_from_birthday(person[:birthdate])
       end
     end
@@ -53,7 +53,7 @@ class RenegadeData
         set = set.where('gender = ?', filter['gender'])
       end
       if filter.has_key?('role')
-        set = set.where('person_type = ?', @types.index(filter['role']) + 1)
+        set = set.where('person_type_id = ?', @types.select { |pt| pt[:id] == filter[:role] }.first()[:id])
       end
       if filter.has_key?('meeting')
         set = set.where('meeting_id = ?', filter['meeting'])
@@ -112,7 +112,7 @@ class RenegadeData
 
   def add_person(params)
     local_params = params.merge({
-      'person_type' => params['role'],
+      'person_type_id' => params['role'].to_i,
       'meeting_id' => params['meeting'].to_i,
       'create_date' => Date.today,
       'id' => nil
@@ -123,10 +123,11 @@ class RenegadeData
 
   def update_person(params)
     local_params = params.merge({
-      'person_type' => params['role'],
+      'person_type_id' => params['role'].to_i,
       'meeting_id' => params['meeting'].to_i,
     })
     local_params = remove_unneeded_person_keys(local_params)
+    p local_params[:person_type_id]
     @DB[:people].filter(:id => params['id']).update(local_params)
   end
 
@@ -154,7 +155,7 @@ class RenegadeData
   end
 
   def get_types
-    @types
+    @types.map { |pt| pt[:description] }
   end
 
   # site user stuff

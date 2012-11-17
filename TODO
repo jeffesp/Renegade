@@ -1,8 +1,10 @@
 NOTES
 
+Paging display doesn't work quite right 
+
 Add google map display in view page.
 
-Add icon for home screens.
+Phone number validation on input page.
 
 It would be nice to have some sort of route or url creation code rather than manually throwing together strings.
 

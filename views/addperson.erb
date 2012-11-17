@@ -18,7 +18,7 @@
     <div class="control-group">
       <label class="control-label">Role:</label>
       <div class="controls">
-        <%= partial(:selectList, {:values => {"1" => "Student", "2" => "Worker", "3" => "Student Worker" }, :current_value => @person[:person_type], :name => "role" }) %>
+        <%= partial(:selectList, {:values => Hash[@types.each_with_index.collect { |t, i| [ i+1, t ] }], :current_value => @person[:person_type_id], :name => "role" }) %>
       </div>
     </div>
     <div class="control-group">

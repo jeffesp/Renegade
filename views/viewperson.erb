@@ -4,7 +4,7 @@
   <dt>Gender</dt>
   <dd><%= @person[:gender].capitalize %> </dd>
   <dt>Role</dt>
-  <dd><%= { :student => "Student", :worker => "Worker", :student_worker => "Student Worker" }[ @person[:type] ] %> </dd>
+  <dd><%= @types[@person[:person_type_id]-1] %> </dd>
   <dt>Meeting</dt>
   <dd><%= @meetings[@person[:meeting_id]-1][:name] %></dd> <!-- HACK: -1 sucks! -->
   <dt>Phone</dt>

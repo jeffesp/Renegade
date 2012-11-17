@@ -7,7 +7,7 @@ CREATE TABLE people (
   gender            TEXT NOT NULL,
   meeting_id        INTEGER NOT NULL,
   birthdate         DATETIME NOT NULL,
-  person_type       INTEGER NOT NULL,
+  person_type_id    INTEGER NOT NULL,
   -- optional fields
   photo_id          INTEGER NULL,
   address_line1     TEXT NULL,
@@ -25,6 +25,12 @@ CREATE TABLE people (
   create_date       DATETIME NOT NULL,
   delete_date       DATETIME NULL,
   PRIMARY KEY(id)
+);
+
+CREATE TABLE person_type (
+  id             INTEGER NOT NULL,
+  description    TEXT NOT NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE student_parents (
@@ -109,6 +115,7 @@ CREATE TABLE meeting_attendance (
   FOREIGN KEY (person_id)  REFERENCES people (id) ON DELETE CASCADE
 );
 
+
 -- tables that support the application, not data used by the application
 CREATE TABLE users (
   id              INTEGER NOT NULL,
@@ -148,6 +155,10 @@ INSERT INTO locations (name, description, create_date) VALUES ('J-Hi', 'Jr. High
 INSERT INTO locations (name, description, create_date) VALUES ('High School', 'High School', date('now'));
 INSERT INTO locations (name, description, create_date) VALUES ('South Side', 'South Side', date('now'));
 INSERT INTO locations (name, description, create_date) VALUES ('Lighthouse', 'Lighthouse', date('now'));
+
+INSERT INTO person_type (name) VALUES ('Student')
+INSERT INTO person_type (name) VALUES ('Worker')
+INSERT INTO person_type (name) VALUES ('Student Worker')
 
 CREATE VIEW student AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 1 AND delete_date IS NULL;
 CREATE VIEW worker  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 2 AND delete_date IS NULL;
