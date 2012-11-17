@@ -42,7 +42,7 @@ class RenegadeData
 
   def get_people(filter=nil)
     if (filter == nil)
-      set = @DB[:people].limit(5, 0)
+      set = @DB[:people].limit(10, 0)
       count_set = @DB[:people]
     else
       # because the grade is calculated in this file, first we filter by other critera, get that
@@ -61,23 +61,31 @@ class RenegadeData
 
       if filter.has_key?('page')
         count_set = set
-        set = set.limit(5, filter['page'].to_i * 5)
+        set = set.limit(10, filter['page'].to_i * 10)
       else
         count_set = set
-        set = set.limit(5, 0)
+        set = set.limit(10, 0)
       end
 
     end
     [update_people_for_display(set), count_set.count]
   end
 
-  def find_people(name)
+  def find_people(filter)
     # simple LIKE filtering for now
     # SQLite does have some sort of full text support, and could use get Sequel to support MATCH
     # TODO: somehow this is interpreted as case sensitive. need to work around with .downcase and lower()
-    name_lower = "%#{name.downcase}%"
+    # This format will prevent SQL injection as it is paramaterized
+    name_lower = "%#{filter['search'].downcase}%"
     query = @DB.fetch("SELECT * FROM people WHERE delete_date IS NULL AND (lower(first_name) LIKE ? OR lower(last_name) LIKE ?)", name_lower, name_lower)
-    update_people_for_display(query)
+    if filter.has_key?('page')
+      count_set = query
+      set = query.limit(10, filter['page'].to_i * 10)
+    else
+      count_set = query
+      set = query.limit(10, 0)
+    end
+    [update_people_for_display(set), count_set.count]
   end
 
   # changes the values hash to remove the split date (name-date-{y,m,d}) members.
