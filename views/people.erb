@@ -34,21 +34,14 @@
 </table>
 
 <%
-  pages = @people[1] / 10
-  total_pages = pages
-  if pages >= 5 then
-    pages = 5
-  end
-
+  total_count = @people[1] 
+  pages = (total_count + 1) / 20
 %>
 
   <div class="pagination">
     <ul>
-      <% for i in 0..pages %>
+      <% for i in 0..(pages - 1) %>
       <li><a href="<%= url("/people" + page_number(i)) %>"><%= i + 1 %></a></li>
-      <% end %>
-      <% if pages < total_pages then %>
-      <li><a href="<%= url("/people" + page_number(total_pages)) %>"><%= total_pages %></a></li>
       <% end %>
     </ul>
   </div>

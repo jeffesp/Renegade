@@ -1,16 +1,21 @@
 NOTES
 
-Paging display doesn't work quite right 
-
-Add google map display in view page.
+Add google (or open street map) map display in view page.
 
 Phone number validation on input page.
 
 It would be nice to have some sort of route or url creation code rather than manually throwing together strings.
 
+It would also be nice to get the data access cleaned up.
+
+Don't show address when we don't have it.
+
 Allow for entry of a second address for pickup? Make pickup address the first entered, and 
 have a secondary for other addresses? - NOTE: just enter in "notes" for now, make data entered
 the most used even if it isn't the residence or home phone number.
+
+Add SSL for site
+	Need Cert first, then can use with site
 
 Add Script/CSS compression for production environment.
 

@@ -42,7 +42,7 @@ class RenegadeData
 
   def get_people(filter=nil)
     if (filter == nil)
-      set = @DB[:people].limit(10, 0)
+      set = @DB[:people].limit(20, 0)
       count_set = @DB[:people]
     else
       # because the grade is calculated in this file, first we filter by other critera, get that
@@ -61,14 +61,14 @@ class RenegadeData
 
       if filter.has_key?('page')
         count_set = set
-        set = set.limit(10, filter['page'].to_i * 10)
+        set = set.limit(20, filter['page'].to_i * 20)
       else
         count_set = set
-        set = set.limit(10, 0)
+        set = set.limit(20, 0)
       end
 
     end
-    [update_people_for_display(set), count_set.count]
+    [update_people_for_display(set), count_set.filter(:delete_date => nil).count]
   end
 
   def find_people(filter)
