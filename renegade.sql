@@ -140,7 +140,6 @@ CREATE TABLE users_roles (
   FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
-COMMIT;
 
 INSERT INTO classes (short_name, name) VALUES ('P-1', 'PreK-1st');
 INSERT INTO classes (short_name, name) VALUES ('2-3', '2nd-3rd');
@@ -156,12 +155,14 @@ INSERT INTO locations (name, description, create_date) VALUES ('High School', 'H
 INSERT INTO locations (name, description, create_date) VALUES ('South Side', 'South Side', date('now'));
 INSERT INTO locations (name, description, create_date) VALUES ('Lighthouse', 'Lighthouse', date('now'));
 
-INSERT INTO person_type (name) VALUES ('Student')
-INSERT INTO person_type (name) VALUES ('Worker')
-INSERT INTO person_type (name) VALUES ('Student Worker')
+INSERT INTO person_type (description) VALUES ('Student');
+INSERT INTO person_type (description) VALUES ('Worker');
+INSERT INTO person_type (description) VALUES ('Student Worker');
+INSERT INTO person_type (description) VALUES ('Contact');
 
-CREATE VIEW student AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 1 AND delete_date IS NULL;
-CREATE VIEW worker  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 2 AND delete_date IS NULL;
-CREATE VIEW parent  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 3 AND delete_date IS NULL;
-CREATE VIEW contact AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type = 4 AND delete_date IS NULL;
+CREATE VIEW student AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type_id = 1 AND delete_date IS NULL;
+CREATE VIEW worker  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type_id = 2 AND delete_date IS NULL;
+CREATE VIEW student_workers  AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type_id = 3 AND delete_date IS NULL;
+CREATE VIEW contact AS SELECT id, first_name, last_name, create_date FROM people WHERE person_type_id = 4 AND delete_date IS NULL;
 
+COMMIT;
