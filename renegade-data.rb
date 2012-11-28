@@ -53,7 +53,7 @@ class RenegadeData
         set = set.where('gender = ?', filter['gender'])
       end
       if filter.has_key?('role')
-        set = set.where('person_type_id = ?', @types.select { |pt| pt[:id] == filter[:role] }.first()[:id])
+        set = set.where('person_type_id = ?', @types.select { |pt| pt[:description] == filter[:role] }.first()[:id])
       end
       if filter.has_key?('meeting')
         set = set.where('meeting_id = ?', filter['meeting'])
