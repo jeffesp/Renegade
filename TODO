@@ -1,4 +1,6 @@
-NOTES
+CODE TODO
+
+Allow for user signup.
 
 Add google (or open street map) map display in view page.
 
@@ -20,3 +22,9 @@ Add SSL for site
 Add Script/CSS compression for production environment.
 
 Add Meetings/classes/rosters.
+
+SYSTEM TODO
+
+Cron job to select users that are not enabled and email list to me.
+Nginx upgrade/update config
+Database backup - maybe install dropbox client and a cron job to copy the db file to the dropbox folder nightly?

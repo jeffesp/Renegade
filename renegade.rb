@@ -118,7 +118,7 @@ class Renegade < Sinatra::Base
 
   post '/create' do
     if (params[:password] == params[:confirm])
-      data.add_user(params[:email], BCrypt::Password.create(params[:password]))
+      @data.add_user(params[:email], BCrypt::Password.create(params[:password]))
       redirect "/", 302
     end
     redirect to("/create?showerror=true"), 302
