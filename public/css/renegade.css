@@ -1,6 +1,8 @@
 body { padding-top: 60px; padding-bottom: 40px; }
-@media (max-width: 767px) {
+@media (max-width: 979px) {
   body {padding-top: 0; padding-bottom:0; }
+}
+@media (max-width: 767px) {
   .navbar-search { width: 180px }
   .navbar-search .search-query { width: 160px }
 }

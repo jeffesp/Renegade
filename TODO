@@ -28,3 +28,5 @@ SYSTEM TODO
 Cron job to select users that are not enabled and email list to me.
 Nginx upgrade/update config
 Database backup - maybe install dropbox client and a cron job to copy the db file to the dropbox folder nightly?
+
+Look for a different host to see if we can get away with something cheaper.
