@@ -9,7 +9,7 @@
     <div class="control-group">
         <label>Email Address:</label>
         <div class="input">
-            <input type="text" id="email" name="email" />
+            <input type="email" id="email" name="email" />
         </div>
     </div>
     <div class="control-group">
@@ -19,10 +19,13 @@
         </div>
     </div>
     <input type="hidden" name="returnurl" value="<%= params[:returnurl] %>" />
-    <div class="actions">
-        <button class="btn primary" type="submit" name="signin">Sign In</button>
-        <button class="btn" type="submit" name="cancel">Cancel</button>
+    <div class="control-group">
+        <button class="btn btn-primary" type="submit" name="signin">Sign In</button>
+        <button class="btn btn-cancel" type="reset" name="cancel">Cancel</button>
     </div>
+  <p>
+    Don't have an account? <a href="/create">Create</a> one here.
+  </p>
 </fieldset>
 </form>
 <script type="text/javascript">
