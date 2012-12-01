@@ -8,7 +8,8 @@
 <% end %>
         <p>
             Once you create an account it must be activated before you can login. You will receive an 
-            email with once your account is activated.
+            email once your account is activated. Email <a href="mailto:jespenschied@gmail.com">Jeff Espenschied</a>
+            if you have not been notified within 24 hours.
         </p>
     <div class="control-group">
         <label>Email Address:</label>
@@ -46,14 +47,6 @@
           email: { requied: "An email address is required to login.", email: "The format of the email address was not reconginzed." },
           password: { requied: "Please enter a password.", minlength: "A password must be a least 6 characters long." },
           confirm: { requied: "Please enter a confirm password.", minlength: "A password must be a least 6 characters long." }
-        },
-        errorClass: "help-inline",
-        errorElement: "span",
-        highlight: function(element, errorClass, validClass) {
-          $(element).closest('.control-group').addClass('error');
-        },
-        unhighlight: function(element, errorClass, validClass) {
-          $(element).closest('.control-group').removeClass('error');
         },
       });
     });

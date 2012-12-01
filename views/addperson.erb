@@ -95,25 +95,19 @@
               last_name: { minlength: 2, required: true },
               "birthdate-date-m" : "required",
               "birthdate-date-d" : "required",
-              "birthdate-date-y" : "required"
+              "birthdate-date-y" : "required",
+              phone: "phoneUS"
             },
             messages: {
               first_name: { minlength: "Please enter more than 2 characters", required: "First name is required" },
               last_name: { minlength: "Please enter more than 2 characters", required: "Last name is required" },
               "birthdate-date-m" : "",
               "birthdate-date-d" : "",
-              "birthdate-date-y" : "Birthday is requried"
+              "birthdate-date-y" : "Birthday is requried",
+              phone: "Phone number was not valid format."
             },
             groups: {
               birthday: "birthdate-date-m birthdate-date-d birthday-date-y"
-            },
-            errorClass: "help-inline",
-            errorElement: "span",
-            highlight: function(element, errorClass, validClass) {
-              $(element).closest('.control-group').addClass('error');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-              $(element).closest('.control-group').removeClass('error');
             },
             errorPlacement: function(label, element) {
               if (/^birthdate/.test(element[0].name)) {

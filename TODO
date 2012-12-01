@@ -1,8 +1,9 @@
 CODE TODO
 
+Data import process.
+
 Add google (or open street map) map display in view page.
 
-Email address type on email inputs.
 Phone number validation on input page.
 
 It would be nice to have some sort of route or url creation code rather than manually throwing together strings.
